@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estate Planning — Attorney Intake</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a3a2a;
+  --navy-light: #2d5c42;
+  --ink: #0a0a0a;
+  --ink-mid: #1a1a1a;
+  --ink-muted: #444444;
+  --ink-faint: #888888;
+  --rule: #c8c8c8;
+  --rule-light: #e0e0e0;
+  --bg: #f7f7f5;
+  --white: #ffffff;
+  --field-bg: #f0f0ee;
+  --accent: #1a3a2a;
+  --flag-amber: #7c3d0a;
+  --flag-amber-bg: #fff8ed;
+  --flag-amber-border: #f5c06a;
+  --flag-red: #7f1d1d;
+  --flag-red-bg: #fff0f0;
+  --flag-red-border: #f08080;
+  --flag-green: #14532d;
+  --flag-green-bg: #f0fdf4;
+  --flag-green-border: #6dbf8a;
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── SCREEN LAYOUT ── */
+.shell {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--navy);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.sidebar-head {
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 8px;
+}
+
+.sidebar-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.sidebar-meta {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--mono);
+}
+
+.nav-group { padding: 10px 0 4px; }
+
+.nav-group-label {
+  font-size: 9px;
+  font-family: var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  padding: 0 14px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+.nav-item.active { background: rgba(255,255,255,0.09); color: #fff; border-left-color: #a8c5a0; }
+.nav-item.done { color: rgba(255,255,255,0.45); }
+.nav-item.done::before { content: '✓'; font-size: 10px; color: #6ee7b7; margin-right: 2px; }
+
+.nav-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.25);
+  min-width: 14px;
+}
+
+.nav-item.active .nav-num { color: #a8c5a0; }
+
+.sidebar-foot {
+  margin-top: auto;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.prog-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  font-family: var(--mono);
+  margin-bottom: 5px;
+}
+
+.prog-track {
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 1px;
+}
+
+.prog-fill {
+  height: 100%;
+  background: #a8c5a0;
+  border-radius: 1px;
+  transition: width 0.4s ease;
+}
+
+/* ── MAIN ── */
+.main { display: flex; flex-direction: column; min-height: 100vh; }
+
+.topbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 28px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-muted);
+}
+
+.topbar-section { color: var(--ink); font-weight: 600; }
+.topbar-sep { color: var(--rule); }
+
+.topbar-right { display: flex; gap: 8px; align-items: center; }
+
+.btn {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink-mid);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn:hover { background: var(--field-bg); border-color: var(--rule); }
+
+.btn-primary {
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+
+.btn-primary:hover { background: var(--navy-light); }
+
+.btn-save {
+  background: var(--flag-green-bg);
+  color: var(--flag-green);
+  border-color: var(--flag-green-border);
+}
+
+.status-chip {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: var(--field-bg);
+  color: var(--ink-muted);
+  border: 1px solid var(--rule);
+}
+
+.status-chip.review { background: var(--flag-amber-bg); color: var(--flag-amber); border-color: var(--flag-amber-border); }
+.status-chip.complete { background: var(--flag-green-bg); color: var(--flag-green); border-color: var(--flag-green-border); }
+
+/* ── CONTENT ── */
+.content {
+  padding: 28px 32px 48px;
+  max-width: 920px;
+  flex: 1;
+}
+
+.pane { display: none; }
+.pane.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.pane-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--navy);
+}
+
+.pane-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.15;
+}
+
+.pane-sub {
+  font-size: 11px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+
+.case-chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+  background: var(--field-bg);
+  border: 1px solid var(--rule);
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.card-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-label::after { content: ''; flex: 1; height: 1px; background: var(--rule-light); }
+
+/* ── GRIDS ── */
+.fg { display: grid; gap: 10px 16px; }
+.fg-1 { grid-template-columns: 1fr; }
+.fg-2 { grid-template-columns: 1fr 1fr; }
+.fg-3 { grid-template-columns: 1fr 1fr 1fr; }
+.fg-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.s2 { grid-column: span 2; }
+.s3 { grid-column: span 3; }
+.s4 { grid-column: span 4; }
+
+/* ── FIELDS ── */
+.f { display: flex; flex-direction: column; gap: 4px; }
+
+label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #333333;
+  line-height: 1.3;
+}
+
+label .req { color: #b91c1c; margin-left: 1px; }
+
+input[type=text],
+input[type=email],
+input[type=tel],
+input[type=date],
+input[type=number],
+select,
+textarea {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 400;
+  color: #0a0a0a;
+  background: var(--field-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[readonly] {
+  background: var(--white);
+  color: var(--ink-muted);
+  border-style: dashed;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--navy);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(26,39,68,0.07);
+}
+
+input::placeholder, textarea::placeholder { color: var(--ink-faint); }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23aeaeb2' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+  cursor: pointer;
+}
+
+textarea { resize: vertical; min-height: 72px; line-height: 1.55; }
+
+/* Notes textarea (attorney-only) */
+textarea.atty {
+  background: var(--flag-amber-bg);
+  border-color: var(--flag-amber-border);
+  color: var(--flag-amber);
+  font-style: italic;
+}
+
+textarea.atty:focus { border-color: #b45309; box-shadow: 0 0 0 3px rgba(146,64,14,0.07); }
+textarea.atty::placeholder { color: #d97706; opacity: 0.6; }
+
+/* ── PILL TOGGLES ── */
+.pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
+.pill { position: relative; }
+.pill input { position: absolute; opacity: 0; width: 0; height: 0; }
+.pill label {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #222222;
+  cursor: pointer;
+  transition: all 0.12s;
+  line-height: 1.4;
+}
+
+.pill input:checked + label {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+  font-weight: 500;
+}
+
+.pill.warn input:checked + label {
+  background: var(--flag-amber-bg);
+  border-color: var(--flag-amber-border);
+  color: var(--flag-amber);
+}
+
+.pill.danger input:checked + label {
+  background: var(--flag-red-bg);
+  border-color: var(--flag-red-border);
+  color: var(--flag-red);
+}
+
+.pill.good input:checked + label {
+  background: var(--flag-green-bg);
+  border-color: var(--flag-green-border);
+  color: var(--flag-green);
+}
+
+/* ── CONDITIONAL BLOCKS ── */
+.cond {
+  display: none;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--navy);
+  border-radius: 0 4px 4px 0;
+}
+
+.cond.show { display: block; }
+.cond.danger { border-left-color: #dc2626; background: var(--flag-red-bg); }
+.cond.warn { border-left-color: #d97706; background: var(--flag-amber-bg); }
+
+/* ── CHECKLIST ── */
+.checklist { display: flex; flex-direction: column; gap: 5px; }
+
+.chk {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  background: var(--field-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chk input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--navy);
+  background: var(--white);
+  border: 1px solid var(--rule);
+  padding: 0;
+  border-radius: 3px;
+}
+
+.chk label {
+  font-size: 13.5px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #1a1a1a;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.chk input:checked + label { color: var(--ink); font-weight: 500; }
+
+/* ── DYNAMIC ROWS ── */
+.dyn { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr auto; gap: 8px; align-items: end; margin-bottom: 8px; }
+.dyn:not(:first-child) label { display: none; }
+
+.rm-btn {
+  width: 30px; height: 30px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.rm-btn:hover { border-color: #dc2626; color: #dc2626; background: var(--flag-red-bg); }
+
+.add-btn {
+  width: 100%;
+  background: var(--white);
+  border: 1px dashed var(--rule);
+  border-radius: 4px;
+  padding: 7px;
+  color: var(--ink-faint);
+  font-size: 11px;
+  font-family: var(--mono);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 6px;
+  letter-spacing: 0.06em;
+}
+
+.add-btn:hover { border-color: var(--navy); color: var(--navy); background: var(--field-bg); }
+
+/* ── FLAG BANNERS ── */
+.flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+  border: 1px solid;
+}
+
+.flag.warn { background: var(--flag-amber-bg); color: var(--flag-amber); border-color: var(--flag-amber-border); }
+.flag.danger { background: var(--flag-red-bg); color: var(--flag-red); border-color: var(--flag-red-border); }
+.flag.good { background: var(--flag-green-bg); color: var(--flag-green); border-color: var(--flag-green-border); }
+.flag-icon { font-size: 13px; margin-top: 1px; flex-shrink: 0; }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--rule-light); margin: 14px 0; }
+
+/* ── SUMMARY ── */
+.sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.sum-item {
+  background: var(--field-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 10px 12px;
+}
+
+.sum-key {
+  font-family: var(--mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-bottom: 3px;
+}
+
+.sum-val { font-size: 14px; color: var(--ink); font-weight: 500; }
+.sum-val.accent { color: var(--navy); }
+
+/* ── SECTION BREAK (print) ── */
+.section-break { display: none; }
+
+/* ────────────────────────────────────────────
+   PRINT STYLES
+   ─────────────────────────────────────────── */
+@media print {
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  html, body {
+    background: #fff !important;
+    font-size: 11pt;
+    color: #000 !important;
+  }
+
+  .shell { display: block !important; }
+  .sidebar, .topbar, .btn, .add-btn, .rm-btn { display: none !important; }
+
+  .content {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .pane { display: block !important; }
+
+  /* Page break before each section */
+  .pane + .pane { page-break-before: always; }
+
+  .pane-header {
+    margin-bottom: 14pt;
+    padding-bottom: 8pt;
+    border-bottom: 1.5pt solid #1a3a2a !important;
+    display: flex !important;
+  }
+
+  .pane-title {
+    font-size: 16pt !important;
+    color: #1a3a2a !important;
+  }
+
+  .pane-sub { font-size: 8pt !important; }
+
+  .case-chip { display: none; }
+
+  .card {
+    background: #fff !important;
+    border: 0.5pt solid #c0c0c0 !important;
+    padding: 10pt 12pt !important;
+    margin-bottom: 8pt !important;
+    page-break-inside: avoid;
+    border-radius: 0 !important;
+  }
+
+  .card-label {
+    font-size: 7pt !important;
+    color: #555 !important;
+    border-color: #ddd !important;
+    margin-bottom: 8pt !important;
+  }
+
+  .card-label::after { background: #ddd !important; }
+
+  /* Field labels */
+  label {
+    font-size: 7.5pt !important;
+    color: #555 !important;
+    margin-bottom: 2pt;
+  }
+
+  /* All inputs become styled print lines */
+  input[type=text],
+  input[type=email],
+  input[type=tel],
+  input[type=date],
+  input[type=number],
+  select,
+  textarea {
+    font-size: 10pt !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 0.5pt solid #aaa !important;
+    border-radius: 0 !important;
+    padding: 2pt 0 3pt !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  textarea {
+    border: 0.5pt solid #bbb !important;
+    border-radius: 0 !important;
+    padding: 4pt !important;
+    min-height: 42pt !important;
+  }
+
+  textarea.atty {
+    background: #fffde7 !important;
+    border-color: #f0c040 !important;
+    color: #5c3d00 !important;
+  }
+
+  select {
+    background-image: none !important;
+    padding-right: 0 !important;
+  }
+
+  /* Pills: show as small printed text */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3pt;
+    margin-top: 2pt;
+  }
+
+  .pill label {
+    font-size: 9pt !important;
+    padding: 2pt 7pt !important;
+    background: #fff !important;
+    border: 0.5pt solid #bbb !important;
+    color: #333 !important;
+    border-radius: 0 !important;
+  }
+
+  .pill input:checked + label {
+    background: #1a3a2a !important;
+    color: #fff !important;
+    border-color: #1a3a2a !important;
+  }
+
+  .pill.warn input:checked + label {
+    background: #fff8e1 !important;
+    color: #7c4d00 !important;
+    border-color: #f0c040 !important;
+  }
+
+  .pill.danger input:checked + label {
+    background: #ffeaea !important;
+    color: #8b0000 !important;
+    border-color: #f08080 !important;
+  }
+
+  .pill.good input:checked + label {
+    background: #e8f5e9 !important;
+    color: #1b5e20 !important;
+    border-color: #81c784 !important;
+  }
+
+  /* Checklist */
+  .chk {
+    background: transparent !important;
+    border: 0.5pt solid #ccc !important;
+    padding: 4pt 8pt !important;
+    border-radius: 0 !important;
+  }
+
+  .chk label { font-size: 9.5pt !important; color: #222 !important; }
+
+  /* Conditional blocks */
+  .cond {
+    display: block !important;
+    border: 0.5pt solid #bbb !important;
+    border-left: 2pt solid #1a3a2a !important;
+    background: #f9f9f9 !important;
+    padding: 6pt 8pt !important;
+    border-radius: 0 !important;
+  }
+
+  .cond.danger { border-left-color: #cc0000 !important; background: #fff5f5 !important; }
+  .cond.warn { border-left-color: #cc8800 !important; background: #fffde7 !important; }
+
+  /* Grids on print — reduce columns for readability */
+  .fg-4 { grid-template-columns: 1fr 1fr !important; }
+  .fg-3 { grid-template-columns: 1fr 1fr 1fr !important; }
+  .s4 { grid-column: span 2 !important; }
+
+  .dyn { grid-template-columns: 2fr 1.5fr 1fr 1fr !important; }
+
+  /* Flags */
+  .flag {
+    background: transparent !important;
+    border: 0.5pt solid !important;
+    font-size: 9pt !important;
+    padding: 5pt 8pt !important;
+  }
+
+  .flag.warn { border-color: #cc8800 !important; color: #5c3d00 !important; }
+  .flag.danger { border-color: #cc0000 !important; color: #660000 !important; }
+
+  /* Summary */
+  .sum-item { background: #f5f5f5 !important; border: 0.5pt solid #ccc !important; }
+  .sum-key { color: #777 !important; }
+
+  /* Section titles as print headers */
+  .pane-header::before {
+    display: block;
+    font-size: 8pt;
+    color: #999;
+    font-family: monospace;
+  }
+
+  .divider { background: #ddd !important; }
+}
+
+@media (max-width: 680px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .fg-3, .fg-4 { grid-template-columns: 1fr 1fr !important; }
+  .content { padding: 16px; }
+}
+/* ── DOCUMENT ACCORDION ── */
+.doc-item {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  margin-bottom: 5px;
+  overflow: hidden;
+}
+
+.doc-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: var(--field-bg);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+}
+
+.doc-row:hover { background: #eaeaf0; }
+
+.doc-item.checked .doc-row { background: #eef4ff; }
+
+.doc-row input[type=checkbox] {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  accent-color: var(--navy);
+  cursor: pointer;
+  padding: 0;
+  border-radius: 3px;
+}
+
+.doc-name {
+  font-size: 13.5px;
+  color: #1a1a1a;
+  flex: 1;
+  font-weight: 400;
+}
+
+.doc-item.checked .doc-name { color: var(--navy); font-weight: 500; }
+
+.doc-chevron {
+  font-size: 18px;
+  color: var(--ink-faint);
+  transition: transform 0.2s;
+  line-height: 1;
+  font-weight: 300;
+}
+
+.doc-item.open .doc-chevron { transform: rotate(90deg); color: var(--navy); }
+
+.doc-detail {
+  display: none;
+  padding: 12px 14px;
+  background: var(--white);
+  border-top: 1px solid var(--rule-light);
+}
+
+.doc-item.open .doc-detail { display: block; }
+
+@media print {
+  .doc-row { background: #f5f5f5 !important; }
+  .doc-item.checked .doc-row { background: #e8f0fe !important; }
+  .doc-detail { display: block !important; border-top: 0.5pt solid #ddd !important; }
+  .doc-chevron { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="sidebar-head">
+    <div class="sidebar-badge">EP Intake · Attorney</div>
+    <div class="sidebar-name" id="sb-name">New Client</div>
+    <div class="sidebar-meta" id="sb-date">—</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Sections</div>
+    <div class="nav-item active" id="nav-1" onclick="go(1)"><span class="nav-num">1</span>Client Identity</div>
+    <div class="nav-item" id="nav-2" onclick="go(2)"><span class="nav-num">2</span>Family Structure</div>
+    <div class="nav-item" id="nav-3" onclick="go(3)"><span class="nav-num">3</span>Assets &amp; Liabilities</div>
+    <div class="nav-item" id="nav-4" onclick="go(4)"><span class="nav-num">4</span>Existing Documents</div>
+    <div class="nav-item" id="nav-5" onclick="go(5)"><span class="nav-num">5</span>Distribution &amp; Wishes</div>
+    <div class="nav-item" id="nav-6" onclick="go(6)"><span class="nav-num">6</span>Fiduciaries</div>
+    <div class="nav-item" id="nav-7" onclick="go(7)"><span class="nav-num">7</span>Planning Notes</div>
+    <div class="nav-item" id="nav-8" onclick="go(8)"><span class="nav-num">8</span>Summary &amp; Submit</div>
+  </div>
+  <div class="sidebar-foot">
+    <div class="prog-label"><span>Completion</span><span id="pct">0%</span></div>
+    <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <span>Estate Planning</span>
+      <span class="topbar-sep">/</span>
+      <span class="topbar-section" id="tb-sec">Client Identity</span>
+      <span class="topbar-sep">·</span>
+      <span class="status-chip" id="status-chip">Draft</span>
+    </div>
+    <div class="topbar-right">
+      <button class="btn" onclick="window.print()">Print / PDF</button>
+      <button class="btn" onclick="saveAsHTML()" title="Download this page as an HTML file">⬇ Save as HTML</button>
+      <button class="btn" onclick="saveAsPDF()" title="Save as PDF">⬇ Save as PDF</button>
+      <button class="btn" id="drive-btn" onclick="uploadToDrive()" title="Upload to Google Drive" style="background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;">⬆ Upload to Drive</button>
+      <button class="btn" onclick="printThenDrive()" title="Save as PDF then open Google Drive" style="background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;">⬆ PDF → Drive</button>
+      <button class="btn btn-save" onclick="saveDraft()">Save Draft</button>
+      <button class="btn btn-primary" onclick="nextPane()">Next →</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+<!-- ══════════════════════════════════════
+     SECTION 1 · CLIENT IDENTITY
+══════════════════════════════════════ -->
+<div class="pane active" id="pane-1">
+  <div class="pane-header">
+    <div>
+      <div class="pane-title">Client Identity</div>
+      <div class="pane-sub">Client 1 · Client 2 · Prior Marriages</div>
+    </div>
+  </div>
+
+  <!-- Client tabs -->
+  <div style="display:flex;gap:0;margin-bottom:14px;border:1px solid var(--rule);border-radius:5px;overflow:hidden;width:fit-content">
+    <div id="tab-c1" onclick="switchClient(1)" style="padding:7px 20px;font-size:12px;font-weight:500;cursor:pointer;background:var(--navy);color:#fff;border-right:1px solid var(--rule)">Client 1</div>
+    <div id="tab-c2" onclick="switchClient(2)" style="padding:7px 20px;font-size:12px;font-weight:500;cursor:pointer;background:var(--white);color:var(--ink-muted)">Client 2</div>
+  </div>
+
+  <!-- ── CLIENT 1 ── -->
+  <div id="client1-fields">
+  <div class="card">
+    <div class="card-label">Client 1</div>
+    <div class="fg fg-4">
+      <div class="f"><label>First Name <span class="req">*</span></label><input type="text" id="c-first" oninput="updateSidebar()" placeholder="First"></div>
+      <div class="f"><label>Middle</label><input type="text" placeholder="Middle"></div>
+      <div class="f"><label>Last Name <span class="req">*</span></label><input type="text" id="c-last" oninput="updateSidebar()" placeholder="Last"></div>
+      <div class="f"><label>Suffix</label><select><option value="">—</option><option>Jr.</option><option>Sr.</option><option>II</option><option>III</option><option>Esq.</option></select></div>
+      <div class="f"><label>Date of Birth <span class="req">*</span></label><input type="date" id="c-dob" onchange="calcAge()"></div>
+      <div class="f"><label>Age</label><input type="text" id="c-age" readonly placeholder="auto"></div>
+      <div class="f"><label>SSN / TIN</label><input type="text" placeholder="XXX-XX-XXXX" maxlength="11"></div>
+      <div class="f"><label>Citizenship</label><select><option>U.S. Citizen</option><option>Permanent Resident</option><option>Non-Resident Alien</option><option>Dual Citizen</option></select></div>
+      <div class="f s2"><label>Home Address <span class="req">*</span></label><input type="text" placeholder="Street address"></div>
+      <div class="f"><label>City</label><input type="text" placeholder="City"></div>
+      <div class="f"><label>State</label><select><option value="">—</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option></select></div>
+      <div class="f"><label>ZIP</label><input type="text" placeholder="ZIP"></div>
+      <div class="f s2">
+        <label>Phone <span class="req">*</span></label>
+        <div id="c1-phones">
+          <div style="display:flex;gap:6px;margin-bottom:4px"><input type="tel" placeholder="(000) 000-0000" style="flex:1"><select style="width:110px"><option>Mobile</option><option>Home</option><option>Work</option><option>Fax</option></select></div>
+        </div>
+        <button type="button" onclick="addContactField('c1-phones','tel','(000) 000-0000')" style="font-size:11px;color:var(--navy);background:none;border:1px dashed var(--rule);border-radius:3px;padding:3px 8px;cursor:pointer;margin-top:2px">+ Add phone</button>
+      </div>
+      <div class="f s2">
+        <label>Email <span class="req">*</span></label>
+        <div id="c1-emails">
+          <div style="display:flex;gap:6px;margin-bottom:4px"><input type="email" placeholder="email@domain.com" style="flex:1"><select style="width:110px"><option>Personal</option><option>Work</option><option>Other</option></select></div>
+        </div>
+        <button type="button" onclick="addContactField('c1-emails','email','email@domain.com')" style="font-size:11px;color:var(--navy);background:none;border:1px dashed var(--rule);border-radius:3px;padding:3px 8px;cursor:pointer;margin-top:2px">+ Add email</button>
+      </div>
+      <div class="f"><label>Occupation</label><input type="text" placeholder="Profession / title"></div>
+      <div class="f"><label>Employer</label><input type="text" placeholder="Employer name"></div>
+      <div class="f"><label>Annual Income</label><select><option value="">—</option><option>Under $75k</option><option>$75k–$150k</option><option>$150k–$300k</option><option>$300k–$500k</option><option>$500k+</option></select></div>
+      <div class="f"><label>Marital Status <span class="req">*</span></label>
+        <select id="ms" onchange="toggleSpouse()">
+          <option value="">—</option><option>Single</option><option>Married</option>
+          <option>Domestic Partnership</option><option>Divorced</option><option>Widowed</option><option>Separated</option>
+        </select>
+      </div>
+      <div class="f s2"><label>ShareFile Link</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input type="url" id="sharefile-link" placeholder="https://sharefile.com/..." style="flex:1" oninput="updateSharefileLink()">
+          <button onclick="openSharefile()" title="Open ShareFile folder" style="flex-shrink:0;height:36px;width:36px;border:1px solid var(--rule);border-radius:4px;background:var(--field-bg);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all 0.15s" onmouseover="this.style.background='var(--navy)';this.style.color='white';this.style.borderColor='var(--navy)'" onmouseout="this.style.background='var(--field-bg)';this.style.color='inherit';this.style.borderColor='var(--rule)'">↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- ── CLIENT 2 ── -->
+  <div id="client2-fields" style="display:none">
+  <div class="card">
+    <div class="card-label">Client 2</div>
+    <div class="fg fg-4">
+      <div class="f"><label>First Name</label><input type="text" id="c2-first" oninput="updateSidebar2()" placeholder="First"></div>
+      <div class="f"><label>Middle</label><input type="text" placeholder="Middle"></div>
+      <div class="f"><label>Last Name</label><input type="text" id="c2-last" oninput="updateSidebar2()" placeholder="Last"></div>
+      <div class="f"><label>Suffix</label><select><option value="">—</option><option>Jr.</option><option>Sr.</option><option>II</option><option>III</option><option>Esq.</option></select></div>
+      <div class="f"><label>Date of Birth</label><input type="date" id="c2-dob" onchange="calcAge2()"></div>
+      <div class="f"><label>Age</label><input type="text" id="c2-age" readonly placeholder="auto"></div>
+      <div class="f"><label>SSN / TIN</label><input type="text" placeholder="XXX-XX-XXXX" maxlength="11"></div>
+      <div class="f"><label>Citizenship</label><select><option>U.S. Citizen</option><option>Permanent Resident</option><option>Non-Resident Alien</option><option>Dual Citizen</option></select></div>
+      <div class="f s2"><label>Home Address</label><input type="text" placeholder="If different from Client 1"></div>
+      <div class="f"><label>City</label><input type="text" placeholder="City"></div>
+      <div class="f"><label>State</label><select><option value="">—</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option></select></div>
+      <div class="f"><label>ZIP</label><input type="text" placeholder="ZIP"></div>
+      <div class="f s2">
+        <label>Phone</label>
+        <div id="c2-phones">
+          <div style="display:flex;gap:6px;margin-bottom:4px"><input type="tel" placeholder="(000) 000-0000" style="flex:1"><select style="width:110px"><option>Mobile</option><option>Home</option><option>Work</option><option>Fax</option></select></div>
+        </div>
+        <button type="button" onclick="addContactField('c2-phones','tel','(000) 000-0000')" style="font-size:11px;color:var(--navy);background:none;border:1px dashed var(--rule);border-radius:3px;padding:3px 8px;cursor:pointer;margin-top:2px">+ Add phone</button>
+      </div>
+      <div class="f s2">
+        <label>Email</label>
+        <div id="c2-emails">
+          <div style="display:flex;gap:6px;margin-bottom:4px"><input type="email" placeholder="email@domain.com" style="flex:1"><select style="width:110px"><option>Personal</option><option>Work</option><option>Other</option></select></div>
+        </div>
+        <button type="button" onclick="addContactField('c2-emails','email','email@domain.com')" style="font-size:11px;color:var(--navy);background:none;border:1px dashed var(--rule);border-radius:3px;padding:3px 8px;cursor:pointer;margin-top:2px">+ Add email</button>
+      </div>
+      <div class="f"><label>Occupation</label><input type="text" placeholder="Profession / title"></div>
+      <div class="f"><label>Employer</label><input type="text" placeholder="Employer name"></div>
+      <div class="f"><label>Annual Income</label><select><option value="">—</option><option>Under $75k</option><option>$75k–$150k</option><option>$150k–$300k</option><option>$300k–$500k</option><option>$500k+</option></select></div>
+      <div class="f"><label>Relationship to Client 1</label>
+        <select id="c2-rel" onchange="toggleMarriage()">
+          <option value="">—</option><option>Spouse</option><option>Domestic Partner</option><option>Sibling</option><option>Parent / Child</option><option>Business Partner</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="marriage-card" style="display:none">
+    <div class="card-label">Marriage / Partnership Details</div>
+    <div class="fg fg-4">
+      <div class="f"><label>Date of Marriage</label><input type="date"></div>
+      <div class="f"><label>State of Marriage</label><select><option value="">—</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option></select></div>
+      <div class="f"><label>Community Property State?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="cp" id="cp-y"><label for="cp-y">Yes</label></div><div class="pill"><input type="radio" name="cp" id="cp-n"><label for="cp-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Joint or Separate Planning?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="jt-plan" id="jtp-joint"><label for="jtp-joint">Joint</label></div><div class="pill"><input type="radio" name="jt-plan" id="jtp-sep"><label for="jtp-sep">Separate</label></div><div class="pill"><input type="radio" name="jt-plan" id="jtp-both"><label for="jtp-both">Both / coordinated</label></div></div>
+      </div>
+      <div class="f s2"><label>Prenuptial Agreement?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="pre" id="pre-y" onchange="show('pre-cond')"><label for="pre-y">Yes</label></div><div class="pill"><input type="radio" name="pre" id="pre-n" onchange="hide('pre-cond')"><label for="pre-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="pre-cond">
+      <div class="fg fg-3">
+        <div class="f"><label>Date of Agreement</label><input type="date"></div>
+        <div class="f"><label>Drafting Attorney / Firm</label><input type="text" placeholder="Attorney name"></div>
+        <div class="f s3"><label>Key Provisions</label><textarea placeholder="Summarize relevant terms…"></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Client 2 — Prior Marriages</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Prior Marriages — Client 2?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="pms" id="pms-y" onchange="show('pms-cond')"><label for="pms-y">Yes</label></div><div class="pill"><input type="radio" name="pms" id="pms-n" onchange="hide('pms-cond')"><label for="pms-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="pms-cond">
+      <div class="fg fg-2">
+        <div class="f"><label># Prior Marriages</label><input type="number" min="1" placeholder="0"></div>
+        <div class="f s2"><label>Notes (alimony, QDRO, child support)</label><textarea placeholder="Ongoing obligations from Client 2's prior marriage…"></textarea></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Prior Marriages for Client 1 (always visible) -->
+  <div id="c1-prior-marriages">
+  <div class="card">
+    <div class="card-label">Prior Marriages — Client 1</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Prior Marriages — Client 1?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="pmc" id="pmc-y" onchange="show('pmc-cond')"><label for="pmc-y">Yes</label></div><div class="pill"><input type="radio" name="pmc" id="pmc-n" onchange="hide('pmc-cond')"><label for="pmc-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="pmc-cond">
+      <div class="fg fg-2">
+        <div class="f"><label># Prior Marriages</label><input type="number" min="1" placeholder="0"></div>
+        <div class="f"><label>Ongoing Support Obligations?</label>
+          <div class="pills"><div class="pill warn"><input type="radio" name="spc" id="spc-y"><label for="spc-y">Yes ⚑</label></div><div class="pill"><input type="radio" name="spc" id="spc-n"><label for="spc-n">No</label></div></div>
+        </div>
+        <div class="f s2"><label>Notes (alimony, QDRO, child support)</label><textarea placeholder="Detail any ongoing obligations…"></textarea></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Attorney Notes — Identity</div>
+    <textarea class="atty" style="width:100%;min-height:80px" placeholder="Attorney notes: open items, follow-up needed, red flags…"></textarea>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 2 · FAMILY STRUCTURE
+══════════════════════════════════════ -->
+<div class="pane" id="pane-2">
+  <div class="pane-header">
+    <div><div class="pane-title">Family Structure</div><div class="pane-sub">Children · Dependents · Special Circumstances</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Children</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Does Client Have Children?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="has-ch" id="ch-y" onchange="show('ch-cond')"><label for="ch-y">Yes</label></div><div class="pill"><input type="radio" name="has-ch" id="ch-n" onchange="hide('ch-cond')"><label for="ch-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="ch-cond">
+      <div id="child-list">
+        <div class="fg fg-4" data-ch>
+          <div class="f"><label>Full Name</label><input type="text" placeholder="Child's full name"></div>
+          <div class="f"><label>Date of Birth</label><input type="date"></div>
+          <div class="f"><label>Relationship</label><select><option>Biological</option><option>Adopted</option><option>Stepchild</option><option>From prior marriage</option></select></div>
+          <div class="f"><label>Special Needs?</label>
+            <div class="pills"><div class="pill"><input type="radio" name="sn0" id="sn0n"><label for="sn0n">No</label></div><div class="pill danger"><input type="radio" name="sn0" id="sn0y"><label for="sn0y">Yes ⚑</label></div></div>
+          </div>
+        </div>
+      </div>
+      <button class="add-btn" onclick="addChild()">+ add child</button>
+      <div class="divider"></div>
+      <div class="fg fg-2">
+        <div class="f"><label>Any Minors (under 18)?</label>
+          <div class="pills"><div class="pill"><input type="radio" name="minors" id="min-y"><label for="min-y">Yes</label></div><div class="pill"><input type="radio" name="minors" id="min-n"><label for="min-n">No</label></div></div>
+        </div>
+        <div class="f"><label>Special Needs Trust Needed?</label>
+          <div class="pills"><div class="pill warn"><input type="radio" name="snt" id="snt-y"><label for="snt-y">Yes — SNT required</label></div><div class="pill"><input type="radio" name="snt" id="snt-n"><label for="snt-n">No</label></div></div>
+        </div>
+        <div class="f s2"><label>Trust Distribution Age</label>
+          <div class="pills">
+            <div class="pill"><input type="radio" name="ta" id="ta18"><label for="ta18">18</label></div>
+            <div class="pill"><input type="radio" name="ta" id="ta21"><label for="ta21">21</label></div>
+            <div class="pill"><input type="radio" name="ta" id="ta25"><label for="ta25">25</label></div>
+            <div class="pill"><input type="radio" name="ta" id="ta30"><label for="ta30">30</label></div>
+            <div class="pill"><input type="radio" name="ta" id="ta-stag"><label for="ta-stag">Staggered</label></div>
+            <div class="pill"><input type="radio" name="ta" id="ta-disc"><label for="ta-disc">Discretionary</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Other Dependents &amp; Obligations</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Supporting Anyone Else Financially?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="od" id="od-y" onchange="show('od-cond')"><label for="od-y">Yes</label></div><div class="pill"><input type="radio" name="od" id="od-n" onchange="hide('od-cond')"><label for="od-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Anticipated Future Dependents?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="fd" id="fd-y"><label for="fd-y">Yes</label></div><div class="pill"><input type="radio" name="fd" id="fd-n"><label for="fd-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="od-cond">
+      <div class="f"><label>Describe Dependents and Support Structure</label><textarea placeholder="Aging parent, disabled sibling, grandchild — relationship and nature of support…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Family Dynamics</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Risk of Family Conflict Over Estate?</label>
+        <div class="pills">
+          <div class="pill good"><input type="radio" name="conf" id="conf-lo"><label for="conf-lo">Low</label></div>
+          <div class="pill warn"><input type="radio" name="conf" id="conf-med"><label for="conf-med">Medium ⚑</label></div>
+          <div class="pill danger"><input type="radio" name="conf" id="conf-hi"><label for="conf-hi">High ⚑</label></div>
+        </div>
+      </div>
+      <div class="f"><label>Estranged Family Members?</label>
+        <div class="pills"><div class="pill danger"><input type="radio" name="est" id="est-y"><label for="est-y">Yes ⚑</label></div><div class="pill"><input type="radio" name="est" id="est-n"><label for="est-n">No</label></div></div>
+      </div>
+      <div class="f s2"><label>Attorney Notes — Family Dynamics</label><textarea class="atty" placeholder="Blended family complexity, potential contestants, estrangement details…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 3 · ASSETS & LIABILITIES
+══════════════════════════════════════ -->
+<div class="pane" id="pane-3">
+  <div class="pane-header">
+    <div><div class="pane-title">Assets &amp; Liabilities</div><div class="pane-sub">Real Estate · Financial · Business Interests · Debts</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Real Property</div>
+    <div class="fg fg-4">
+      <div class="f s2"><label>Primary Residence Address</label><input type="text" placeholder="Street, City, State, ZIP"></div>
+      <div class="f"><label>Fair Market Value (est.)</label><input type="text" placeholder="$000,000"></div>
+      <div class="f"><label>Mortgage Balance</label><input type="text" placeholder="$000,000 or None"></div>
+      <div class="f s2"><label>How Titled</label>
+        <select><option value="">— select —</option><option>Sole ownership</option><option>Joint tenancy (JTWROS)</option><option>Tenants in common</option><option>Community property</option><option>Community property w/ survivorship</option><option>Held in revocable trust</option><option>LLC / entity</option></select>
+      </div>
+      <div class="f"><label>Situs State</label><select><option value="">—</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option></select></div>
+      <div class="f"><label>Additional Properties?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="addre" id="re-y" onchange="show('re-cond')"><label for="re-y">Yes</label></div><div class="pill"><input type="radio" name="addre" id="re-n" onchange="hide('re-cond')"><label for="re-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="re-cond">
+      <div id="add-prop-list">
+        <div class="add-prop-item" style="background:var(--field-bg);border:1px solid var(--rule-light);border-radius:5px;padding:14px 16px;margin-bottom:10px;">
+          <div class="fg fg-3" style="margin-bottom:8px">
+            <div class="f s2"><label>Street Address</label><input type="text" placeholder="123 Main St"></div>
+            <div class="f"><label>City</label><input type="text" placeholder="City"></div>
+            <div class="f"><label>State</label><select><option value="">—</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option></select></div>
+            <div class="f"><label>ZIP</label><input type="text" placeholder="ZIP"></div>
+            <div class="f"><label>Property Type</label><select><option value="">—</option><option>Primary Residence</option><option>Vacation / Second Home</option><option>Rental / Investment</option><option>Commercial</option><option>Land / Vacant Lot</option><option>Other</option></select></div>
+            <div class="f"><label>Estimated FMV</label><input type="text" placeholder="$000,000"></div>
+            <div class="f"><label>Mortgage Balance</label><input type="text" placeholder="$000,000 or None"></div>
+            <div class="f s2"><label>How Titled</label><select><option value="">— select —</option><option>Sole ownership</option><option>Joint tenancy (JTWROS)</option><option>Tenants in common</option><option>Community property</option><option>Community property w/ survivorship</option><option>Held in revocable trust</option><option>LLC / entity</option></select></div>
+            <div class="f s3"><label>Notes (title issues, liens, co-owners, ancillary probate concerns)</label><textarea placeholder="Any title concerns, outstanding liens, co-ownership details, out-of-state probate issues…"></textarea></div>
+          </div>
+        </div>
+      </div>
+      <button type="button" onclick="addProperty()" style="font-size:12px;color:var(--navy);background:none;border:1px dashed var(--rule);border-radius:4px;padding:5px 14px;cursor:pointer;margin-top:2px">+ Add another property</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Financial Assets</div>
+    <div class="fg fg-4">
+      <div class="f"><label>Checking / Savings</label><input type="text" placeholder="$000,000"></div>
+      <div class="f"><label>Brokerage / Investments</label><input type="text" placeholder="$000,000"></div>
+      <div class="f"><label>Retirement Accounts (IRA/401k)</label><input type="text" placeholder="$000,000"></div>
+      <div class="f"><label>Roth IRA</label><input type="text" placeholder="$000,000 or N/A"></div>
+      <div class="f"><label>Life Insurance — Death Benefit</label><input type="text" placeholder="$000,000 or None"></div>
+      <div class="f"><label>Policy Type</label><select><option value="">—</option><option>Term</option><option>Whole Life</option><option>Universal Life</option><option>Variable</option><option>ILIT</option></select></div>
+      <div class="f"><label>Annuities</label><input type="text" placeholder="$000,000 or None"></div>
+      <div class="f"><label>HSA / 529 / Other</label><input type="text" placeholder="$000,000 or None"></div>
+      <div class="f s2"><label>Beneficiaries Designated on Accounts?</label>
+        <div class="pills"><div class="pill good"><input type="radio" name="ben-des" id="bd-y"><label for="bd-y">Yes — current</label></div><div class="pill warn"><input type="radio" name="ben-des" id="bd-some"><label for="bd-some">Some / outdated ⚑</label></div><div class="pill danger"><input type="radio" name="ben-des" id="bd-n"><label for="bd-n">No ⚑</label></div></div>
+      </div>
+      <div class="f s2"><label>TOD / POD Designations in Place?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="tod" id="tod-y"><label for="tod-y">Yes</label></div><div class="pill"><input type="radio" name="tod" id="tod-n"><label for="tod-n">No</label></div></div>
+      </div>
+      <div class="f s4"><label>Notes on Accounts (institutions, outdated beneficiaries, funding issues)</label><textarea placeholder="Flag any accounts needing retitling, outdated beneficiaries, or coordination issues…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Business Interests</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Owns a Business Interest?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="biz" id="biz-y" onchange="show('biz-cond')"><label for="biz-y">Yes</label></div><div class="pill"><input type="radio" name="biz" id="biz-n" onchange="hide('biz-cond')"><label for="biz-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="biz-cond">
+      <div class="fg fg-4">
+        <div class="f"><label>Business Name</label><input type="text" placeholder="Entity name"></div>
+        <div class="f"><label>Entity Type</label><select><option>LLC</option><option>S-Corp</option><option>C-Corp</option><option>Partnership</option><option>Sole Proprietorship</option><option>Professional Corp</option></select></div>
+        <div class="f"><label>Ownership %</label><input type="text" placeholder="e.g. 50%"></div>
+        <div class="f"><label>Estimated Value</label><input type="text" placeholder="$000,000"></div>
+        <div class="f s2"><label>Buy-Sell Agreement?</label>
+          <div class="pills"><div class="pill good"><input type="radio" name="bs" id="bs-y"><label for="bs-y">Yes</label></div><div class="pill danger"><input type="radio" name="bs" id="bs-n"><label for="bs-n">No ⚑</label></div><div class="pill"><input type="radio" name="bs" id="bs-idk"><label for="bs-idk">Unknown</label></div></div>
+        </div>
+        <div class="f s2"><label>Succession Plan in Place?</label>
+          <div class="pills"><div class="pill good"><input type="radio" name="succ" id="succ-y"><label for="succ-y">Yes</label></div><div class="pill warn"><input type="radio" name="succ" id="succ-n"><label for="succ-n">No ⚑</label></div></div>
+        </div>
+        <div class="f s4"><label>Business Notes</label><textarea placeholder="Key employees, co-owners, valuation method, succession concerns, operating agreement…"></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Other Assets &amp; Liabilities</div>
+    <div class="fg fg-4">
+      <div class="f"><label>Digital / Crypto Assets</label><input type="text" placeholder="Est. value or N/A"></div>
+      <div class="f"><label>Collectibles / Art / Jewelry</label><input type="text" placeholder="Est. value or N/A"></div>
+      <div class="f"><label>Intellectual Property / Royalties</label><input type="text" placeholder="Description or N/A"></div>
+      <div class="f"><label>Expected Inheritance?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="inh" id="inh-y"><label for="inh-y">Yes</label></div><div class="pill"><input type="radio" name="inh" id="inh-pos"><label for="inh-pos">Possible</label></div><div class="pill"><input type="radio" name="inh" id="inh-n"><label for="inh-n">No</label></div></div>
+      </div>
+      <div class="f s2"><label>Total Estate Value Range</label>
+        <select id="estate-range"><option value="">— select —</option><option>Under $500k</option><option>$500k–$1M</option><option>$1M–$3M</option><option>$3M–$5M</option><option>$5M–$10M</option><option>Over $10M</option></select>
+      </div>
+      <div class="f s2"><label>Federal Estate Tax Exposure?</label>
+        <div class="pills"><div class="pill good"><input type="radio" name="tax" id="tax-no"><label for="tax-no">No — below exemption</label></div><div class="pill warn"><input type="radio" name="tax" id="tax-pos"><label for="tax-pos">Possibly ⚑</label></div><div class="pill danger"><input type="radio" name="tax" id="tax-yes"><label for="tax-yes">Yes — advanced planning needed ⚑</label></div></div>
+      </div>
+      <div class="f s4"><label>Significant Liabilities</label><textarea placeholder="Mortgages, business debt, personal loans, IRS obligations, personal guarantees…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 4 · EXISTING DOCUMENTS
+══════════════════════════════════════ -->
+<div class="pane" id="pane-4">
+  <div class="pane-header">
+    <div><div class="pane-title">Existing Estate Documents</div><div class="pane-sub">Document Inventory · Review Status · Gaps Identified</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Document Inventory — click any document to add details</div>
+    <div id="doc-inventory">
+
+      <div class="doc-item" id="di-will">
+        <div class="doc-row" onclick="toggleDoc('will')">
+          <input type="checkbox" id="d-will" onclick="event.stopPropagation();checkDoc('will',this)">
+          <span class="doc-name">Last Will &amp; Testament</span>
+          <span class="doc-chevron" id="chev-will">›</span>
+        </div>
+        <div class="doc-detail" id="dd-will">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Drafting Attorney</label><input type="text" placeholder="Attorney / firm name"></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Key provisions, named executor, any concerns…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-rev">
+        <div class="doc-row" onclick="toggleDoc('rev')">
+          <input type="checkbox" id="d-rev" onclick="event.stopPropagation();checkDoc('rev',this)">
+          <span class="doc-name">Revocable Living Trust</span>
+          <span class="doc-chevron" id="chev-rev">›</span>
+        </div>
+        <div class="doc-detail" id="dd-rev">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Drafting Attorney</label><input type="text" placeholder="Attorney / firm name"></div>
+            <div class="f"><label>Funded?</label><select><option value="">—</option><option>Yes — fully funded</option><option>Partially funded</option><option>Not funded</option></select></div>
+            <div class="f"><label>Trustee Named</label><input type="text" placeholder="Current trustee"></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Key terms, distribution provisions, any concerns…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-ab">
+        <div class="doc-row" onclick="toggleDoc('ab')">
+          <input type="checkbox" id="d-ab" onclick="event.stopPropagation();checkDoc('ab',this)">
+          <span class="doc-name">A/B Revocable Living Trust (Bypass / Marital Trust)</span>
+          <span class="doc-chevron" id="chev-ab">›</span>
+        </div>
+        <div class="doc-detail" id="dd-ab">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Drafting Attorney</label><input type="text" placeholder="Attorney / firm name"></div>
+            <div class="f"><label>Funded?</label><select><option value="">—</option><option>Yes — fully funded</option><option>Partially funded</option><option>Not funded</option></select></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated — pre-TCJA</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Trust A / Trust B split, bypass amount, QTIP provisions…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-irr">
+        <div class="doc-row" onclick="toggleDoc('irr')">
+          <input type="checkbox" id="d-irr" onclick="event.stopPropagation();checkDoc('irr',this)">
+          <span class="doc-name">Irrevocable Trust (other)</span>
+          <span class="doc-chevron" id="chev-irr">›</span>
+        </div>
+        <div class="doc-detail" id="dd-irr">
+          <div class="fg fg-3">
+            <div class="f"><label>Trust Type</label><input type="text" placeholder="e.g. GRAT, SLAT, IDGT, CRT…"></div>
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Drafting Attorney</label><input type="text" placeholder="Attorney / firm name"></div>
+            <div class="f"><label>Trustee</label><input type="text" placeholder="Current trustee"></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Active</option><option>Terminated</option><option>Under review</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Purpose, assets held, key provisions…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-mapt">
+        <div class="doc-row" onclick="toggleDoc('mapt')">
+          <input type="checkbox" id="d-mapt" onclick="event.stopPropagation();checkDoc('mapt',this)">
+          <span class="doc-name">Irrevocable Medicaid Asset Protection Trust (MAPT)</span>
+          <span class="doc-chevron" id="chev-mapt">›</span>
+        </div>
+        <div class="doc-detail" id="dd-mapt">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Drafting Attorney</label><input type="text" placeholder="Attorney / firm name"></div>
+            <div class="f"><label>Look-Back Period Cleared?</label><select><option value="">—</option><option>Yes</option><option>No — still in window</option><option>Unknown</option></select></div>
+            <div class="f"><label>Assets Transferred</label><input type="text" placeholder="e.g. primary residence, investment account"></div>
+            <div class="f"><label>Trustee</label><input type="text" placeholder="Trustee name"></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="State of domicile, income rights retained, Medicaid eligibility status…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-ilit">
+        <div class="doc-row" onclick="toggleDoc('ilit')">
+          <input type="checkbox" id="d-ilit" onclick="event.stopPropagation();checkDoc('ilit',this)">
+          <span class="doc-name">Irrevocable Life Insurance Trust (ILIT)</span>
+          <span class="doc-chevron" id="chev-ilit">›</span>
+        </div>
+        <div class="doc-detail" id="dd-ilit">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Drafting Attorney</label><input type="text" placeholder="Attorney / firm name"></div>
+            <div class="f"><label>Policy Death Benefit</label><input type="text" placeholder="$000,000"></div>
+            <div class="f"><label>Crummey Notices Current?</label><select><option value="">—</option><option>Yes</option><option>No</option><option>Unknown</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Insured, beneficiaries, premium payment structure…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-poa-f">
+        <div class="doc-row" onclick="toggleDoc('poa-f')">
+          <input type="checkbox" id="d-poa-f" onclick="event.stopPropagation();checkDoc('poa-f',this)">
+          <span class="doc-name">Durable Power of Attorney — Financial</span>
+          <span class="doc-chevron" id="chev-poa-f">›</span>
+        </div>
+        <div class="doc-detail" id="dd-poa-f">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Agent Named</label><input type="text" placeholder="Agent full name"></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Springing vs. immediate, gifting authority, any concerns…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-poa-h">
+        <div class="doc-row" onclick="toggleDoc('poa-h')">
+          <input type="checkbox" id="d-poa-h" onclick="event.stopPropagation();checkDoc('poa-h',this)">
+          <span class="doc-name">Healthcare Power of Attorney / Proxy</span>
+          <span class="doc-chevron" id="chev-poa-h">›</span>
+        </div>
+        <div class="doc-detail" id="dd-poa-h">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Agent Named</label><input type="text" placeholder="Agent full name"></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Scope of authority, any limitations noted…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-adv">
+        <div class="doc-row" onclick="toggleDoc('adv')">
+          <input type="checkbox" id="d-adv" onclick="event.stopPropagation();checkDoc('adv',this)">
+          <span class="doc-name">Living Will / Advance Healthcare Directive</span>
+          <span class="doc-chevron" id="chev-adv">›</span>
+        </div>
+        <div class="doc-detail" id="dd-adv">
+          <div class="fg fg-2">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+            <div class="f s2"><label>Notes</label><textarea placeholder="State-compliant? Key directives noted…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-hipaa">
+        <div class="doc-row" onclick="toggleDoc('hipaa')">
+          <input type="checkbox" id="d-hipaa" onclick="event.stopPropagation();checkDoc('hipaa',this)">
+          <span class="doc-name">HIPAA Authorization</span>
+          <span class="doc-chevron" id="chev-hipaa">›</span>
+        </div>
+        <div class="doc-detail" id="dd-hipaa">
+          <div class="fg fg-2">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Authorized Individuals</label><input type="text" placeholder="Names of authorized persons"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-guard">
+        <div class="doc-row" onclick="toggleDoc('guard')">
+          <input type="checkbox" id="d-guard" onclick="event.stopPropagation();checkDoc('guard',this)">
+          <span class="doc-name">Guardianship Designation (minor children)</span>
+          <span class="doc-chevron" id="chev-guard">›</span>
+        </div>
+        <div class="doc-detail" id="dd-guard">
+          <div class="fg fg-2">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Guardian Named</label><input type="text" placeholder="Guardian full name"></div>
+            <div class="f s2"><label>Notes</label><textarea placeholder="Any concerns or updates needed…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-deed">
+        <div class="doc-row" onclick="toggleDoc('deed')">
+          <input type="checkbox" id="d-deed" onclick="event.stopPropagation();checkDoc('deed',this)">
+          <span class="doc-name">Deed — real property in trust or TOD</span>
+          <span class="doc-chevron" id="chev-deed">›</span>
+        </div>
+        <div class="doc-detail" id="dd-deed">
+          <div class="fg fg-3">
+            <div class="f"><label>Property Address</label><input type="text" placeholder="Property address"></div>
+            <div class="f"><label>Type</label><select><option value="">—</option><option>Into revocable trust</option><option>TOD deed</option><option>Into MAPT</option><option>Other</option></select></div>
+            <div class="f"><label>Date Recorded</label><input type="date"></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="County recorded, grantee/trustee, any title issues…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-snt">
+        <div class="doc-row" onclick="toggleDoc('snt')">
+          <input type="checkbox" id="d-snt" onclick="event.stopPropagation();checkDoc('snt',this)">
+          <span class="doc-name">Special Needs Trust</span>
+          <span class="doc-chevron" id="chev-snt">›</span>
+        </div>
+        <div class="doc-detail" id="dd-snt">
+          <div class="fg fg-3">
+            <div class="f"><label>Date Executed</label><input type="date"></div>
+            <div class="f"><label>Beneficiary</label><input type="text" placeholder="SNT beneficiary name"></div>
+            <div class="f"><label>Trustee</label><input type="text" placeholder="Current trustee"></div>
+            <div class="f"><label>Type</label><select><option value="">—</option><option>First-party (d4A)</option><option>Third-party</option><option>Pooled trust</option></select></div>
+            <div class="f s3"><label>Notes</label><textarea placeholder="Benefits currently received, funding status, any SSI/Medicaid concerns…"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-none">
+        <div class="doc-row" onclick="toggleDoc('none')">
+          <input type="checkbox" id="d-none" onclick="event.stopPropagation();checkDoc('none',this)">
+          <span class="doc-name" style="color:var(--ink-muted);font-style:italic">None — no existing estate documents</span>
+          <span class="doc-chevron" id="chev-none" style="visibility:hidden">›</span>
+        </div>
+      </div>
+
+      <div class="doc-item" id="di-other">
+        <div class="doc-row" onclick="toggleDoc('other')">
+          <input type="checkbox" id="d-other" onclick="event.stopPropagation();checkDoc('other',this)">
+          <span class="doc-name">Other</span>
+          <span class="doc-chevron" id="chev-other">›</span>
+        </div>
+        <div class="doc-detail" id="dd-other">
+          <div id="other-docs-list">
+            <div class="fg fg-3" data-other-row style="margin-bottom:8px">
+              <div class="f"><label>Document Name</label><input type="text" placeholder="e.g. Buy-Sell Agreement, QTIP Trust…"></div>
+              <div class="f"><label>Date Executed</label><input type="date"></div>
+              <div class="f"><label>Status</label><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+              <div class="f s3"><label>Notes</label><textarea placeholder="Describe document, key provisions, concerns…"></textarea></div>
+            </div>
+          </div>
+          <button class="add-btn" onclick="addOtherDoc()">+ add another document</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Document Status</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Year Last Executed / Updated</label><input type="text" placeholder="e.g. 2019 or Never"></div>
+      <div class="f"><label>Documents Provided to Attorney?</label>
+        <div class="pills"><div class="pill good"><input type="radio" name="d-prov" id="dprov-y"><label for="dprov-y">Yes</label></div><div class="pill"><input type="radio" name="d-prov" id="dprov-pend"><label for="dprov-pend">Pending</label></div><div class="pill"><input type="radio" name="d-prov" id="dprov-n"><label for="dprov-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Attorney Review Complete?</label>
+        <div class="pills"><div class="pill good"><input type="radio" name="d-rev" id="drev-y"><label for="drev-y">Yes</label></div><div class="pill"><input type="radio" name="d-rev" id="drev-n"><label for="drev-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Overall Document Status</label>
+        <select><option value="">— select —</option><option>Current — minor revisions only</option><option>Out of date — significant revision needed</option><option>Incomplete — key documents missing</option><option>Starting from scratch</option></select>
+      </div>
+      <div class="f s2"><label>Gaps / Issues Identified</label><textarea class="atty" placeholder="Outdated fiduciaries, pre-2018 tax provisions, missing healthcare docs, unfunded trust, TCJA sunset issues…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Triggering Event</div>
+    <div class="fg fg-1">
+      <div class="f"><label>Reason Client is Seeking Services Now (select all that apply)</label>
+        <div class="pills" style="margin-top:4px">
+          <div class="pill"><input type="checkbox" id="tr-baby"><label for="tr-baby">New child / adoption</label></div>
+          <div class="pill"><input type="checkbox" id="tr-marry"><label for="tr-marry">Recent marriage</label></div>
+          <div class="pill"><input type="checkbox" id="tr-div"><label for="tr-div">Divorce</label></div>
+          <div class="pill"><input type="checkbox" id="tr-death"><label for="tr-death">Death of loved one</label></div>
+          <div class="pill"><input type="checkbox" id="tr-retire"><label for="tr-retire">Approaching retirement</label></div>
+          <div class="pill"><input type="checkbox" id="tr-biz"><label for="tr-biz">Business sale / exit</label></div>
+          <div class="pill warn"><input type="checkbox" id="tr-health"><label for="tr-health">Health diagnosis ⚑</label></div>
+          <div class="pill"><input type="checkbox" id="tr-inh"><label for="tr-inh">Inheritance received</label></div>
+          <div class="pill"><input type="checkbox" id="tr-wealth"><label for="tr-wealth">Significant wealth increase</label></div>
+          <div class="pill"><input type="checkbox" id="tr-state"><label for="tr-state">Moved to new state</label></div>
+          <div class="pill"><input type="checkbox" id="tr-update"><label for="tr-update">Routine update</label></div>
+        </div>
+      </div>
+      <div class="f"><label>Client's Stated Goals (in their own words)</label><textarea placeholder="Direct quotes or paraphrase — primary concerns, what they want to accomplish…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 5 · DISTRIBUTION & WISHES
+══════════════════════════════════════ -->
+<div class="pane" id="pane-5">
+  <div class="pane-header">
+    <div><div class="pane-title">Distribution &amp; Client Wishes</div><div class="pane-sub">Beneficiaries · Bequests · Healthcare Directives · End of Life</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Beneficiaries</div>
+    <div id="ben-list">
+      <div class="dyn">
+        <div class="f"><label>Full Name / Organization</label><input type="text" placeholder="Beneficiary name"></div>
+        <div class="f"><label>Relationship</label><input type="text" placeholder="Spouse, child, charity…"></div>
+        <div class="f"><label>Share %</label><input type="text" placeholder="e.g. 50%"></div>
+        <div class="f"><label>Type</label><select><option>Primary</option><option>Contingent</option><option>Remainder</option></select></div>
+        <button class="rm-btn" onclick="rmRow(this)">×</button>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addBen()">+ add beneficiary</button>
+    <div class="divider"></div>
+    <div class="fg fg-2">
+      <div class="f"><label>Charitable Giving Intentions?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="char" id="char-y" onchange="show('char-cond')"><label for="char-y">Yes</label></div><div class="pill"><input type="radio" name="char" id="char-n" onchange="hide('char-cond')"><label for="char-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Disinheritance of Any Heir?</label>
+        <div class="pills"><div class="pill danger"><input type="radio" name="dis" id="dis-y" onchange="show('dis-cond')"><label for="dis-y">Yes — document carefully ⚑</label></div><div class="pill"><input type="radio" name="dis" id="dis-n" onchange="hide('dis-cond')"><label for="dis-n">No</label></div></div>
+      </div>
+    </div>
+    <div class="cond" id="char-cond">
+      <div class="f"><label>Charitable Beneficiaries, Amounts / Percentages</label><textarea placeholder="Organization name, EIN if known, share or dollar amount, vehicle (outright, CRT, DAF)…"></textarea></div>
+    </div>
+    <div class="cond danger" id="dis-cond">
+      <div class="flag danger"><span class="flag-icon">⚑</span><span>Disinheritance documented — consider no-contest clause, contemporaneous memo, and signed client statement.</span></div>
+      <div class="f"><label>Who is Being Disinherited and Why (Attorney Notes)</label><textarea class="atty" placeholder="Document carefully. Note relationship, reason, and any relevant history…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Specific Bequests</div>
+    <div class="fg fg-1">
+      <div class="f"><label>Personal Property Bequests (specific items to named individuals)</label><textarea placeholder="e.g. 'Wedding ring to daughter Jane; 1965 Mustang to son Tom; art collection to spouse'…"></textarea></div>
+      <div class="f"><label>Real Property Bequests (specific properties to named individuals)</label><textarea placeholder="e.g. 'Vacation home in FL to children equally; rental property in TX to niece Sarah'…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Healthcare &amp; End-of-Life Directives</div>
+    <div class="fg fg-2">
+      <div class="f"><label>Life-Sustaining Treatment</label>
+        <div class="pills" style="flex-direction:column;gap:5px">
+          <div class="pill"><input type="radio" name="lst" id="lst-all"><label for="lst-all">Extend life by all available means</label></div>
+          <div class="pill"><input type="radio" name="lst" id="lst-comfort"><label for="lst-comfort">Comfort / palliative care only</label></div>
+          <div class="pill"><input type="radio" name="lst" id="lst-lim"><label for="lst-lim">Limited intervention (specify in notes)</label></div>
+          <div class="pill"><input type="radio" name="lst" id="lst-defer"><label for="lst-defer">Defer to healthcare agent</label></div>
+        </div>
+      </div>
+      <div class="f"><label>Organ / Tissue Donation</label>
+        <div class="pills" style="flex-direction:column;gap:5px">
+          <div class="pill good"><input type="radio" name="organ" id="org-all"><label for="org-all">Yes — all organs &amp; tissue</label></div>
+          <div class="pill"><input type="radio" name="organ" id="org-spec"><label for="org-spec">Yes — specific organs only (list in notes)</label></div>
+          <div class="pill"><input type="radio" name="organ" id="org-no"><label for="org-no">No donation</label></div>
+          <div class="pill"><input type="radio" name="organ" id="org-idk"><label for="org-idk">Undecided</label></div>
+        </div>
+      </div>
+      <div class="f"><label>Disposition of Remains</label>
+        <div class="pills">
+          <div class="pill"><input type="radio" name="burial" id="bur-trad"><label for="bur-trad">Traditional burial</label></div>
+          <div class="pill"><input type="radio" name="burial" id="bur-crem"><label for="bur-crem">Cremation</label></div>
+          <div class="pill"><input type="radio" name="burial" id="bur-green"><label for="bur-green">Green burial</label></div>
+          <div class="pill"><input type="radio" name="burial" id="bur-oth"><label for="bur-oth">Other</label></div>
+        </div>
+      </div>
+      <div class="f"><label>POLST / DNR in Place?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="polst" id="polst-y"><label for="polst-y">Yes</label></div><div class="pill"><input type="radio" name="polst" id="polst-n"><label for="polst-n">No</label></div></div>
+      </div>
+      <div class="f s2"><label>Special Instructions, Memorial Wishes, Digital Assets</label><textarea placeholder="Funeral preferences, geographic wishes for remains, memorial service notes, digital account instructions…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 6 · FIDUCIARIES
+══════════════════════════════════════ -->
+<div class="pane" id="pane-6">
+  <div class="pane-header">
+    <div><div class="pane-title">Fiduciaries</div><div class="pane-sub">Executor · Trustee · Irrevocable Trust Trustee · Power of Attorney · Guardian</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Executor / Personal Representative</div>
+    <div class="fg fg-3">
+      <div class="f"><label>Primary Executor</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship to Client</label><input type="text" placeholder="Spouse, child, sibling…"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Alternate Executor</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Primary Executor Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Alternate Executor Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f s3"><label>Executor Notes (capacity, conflicts, bond waiver)</label><textarea placeholder="Concerns about executor capacity, conflicts of interest, whether bond should be waived…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Trustee</div>
+    <div class="fg fg-3">
+      <div class="f"><label>Initial / Successor Trustee</label><input type="text" placeholder="Full name or institution"></div>
+      <div class="f"><label>Relationship / Type</label><input type="text" placeholder="Spouse, corporate trustee…"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>2nd Successor Trustee</label><input type="text" placeholder="Full name or institution"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Initial Trustee Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>2nd Successor Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Co-Trustee?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="co-t" id="cot-y"><label for="cot-y">Yes</label></div><div class="pill"><input type="radio" name="co-t" id="cot-n"><label for="cot-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Corporate / Institutional Trustee?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="corp-t" id="corpt-y"><label for="corpt-y">Yes</label></div><div class="pill"><input type="radio" name="corp-t" id="corpt-n"><label for="corpt-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Trustee Compensation</label>
+        <select><option value="">—</option><option>Waived</option><option>Statutory fee</option><option>Reasonable fee</option><option>Fixed fee</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Irrevocable Trust — Trustee</div>
+    <div class="fg fg-3">
+      <div class="f s3"><label>Trust Name</label><input type="text" placeholder="e.g. The Smith Irrevocable Trust dated…"></div>
+      <div class="f"><label>Initial Trustee</label><input type="text" placeholder="Full name or institution"></div>
+      <div class="f"><label>Relationship / Type</label><input type="text" placeholder="Independent, corporate, family…"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Successor Trustee</label><input type="text" placeholder="Full name or institution"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Initial Trustee Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Successor Trustee Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Trust Protector Named?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="tp" id="tp-y" onchange="show('tp-cond')"><label for="tp-y">Yes</label></div><div class="pill"><input type="radio" name="tp" id="tp-n" onchange="hide('tp-cond')"><label for="tp-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Independent Trustee Required?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="ind-t" id="indt-y"><label for="indt-y">Yes</label></div><div class="pill"><input type="radio" name="ind-t" id="indt-n"><label for="indt-n">No</label></div></div>
+      </div>
+      <div class="f"><label>Trustee Compensation</label>
+        <select><option value="">—</option><option>Waived</option><option>Statutory fee</option><option>Reasonable fee</option><option>Fixed fee</option></select>
+      </div>
+      <div class="cond" id="tp-cond">
+        <div class="fg fg-3">
+          <div class="f"><label>Trust Protector Name</label><input type="text" placeholder="Full name"></div>
+          <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship to grantor"></div>
+          <div class="f s3"><label>Trust Protector Powers</label><textarea placeholder="e.g. power to remove/replace trustee, modify administrative provisions, change situs…"></textarea></div>
+        </div>
+      </div>
+      <div class="f s3"><label>Trustee Notes</label><textarea placeholder="Succession concerns, conflicts, removal provisions, special instructions…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Financial Power of Attorney</div>
+    <div class="fg fg-3">
+      <div class="f"><label>Primary Agent</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Alternate Agent</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Primary Agent Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Alternate Agent Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Effective When?</label>
+        <div class="pills"><div class="pill"><input type="radio" name="poa-eff" id="poa-imm"><label for="poa-imm">Immediately (durable)</label></div><div class="pill"><input type="radio" name="poa-eff" id="poa-spring"><label for="poa-spring">Upon incapacity (springing)</label></div></div>
+      </div>
+      <div class="f s2"><label>Gifting Authority</label>
+        <div class="pills"><div class="pill"><input type="radio" name="gift" id="gift-lim"><label for="gift-lim">Yes — limited</label></div><div class="pill warn"><input type="radio" name="gift" id="gift-full"><label for="gift-full">Yes — full ⚑</label></div><div class="pill"><input type="radio" name="gift" id="gift-no"><label for="gift-no">No</label></div></div>
+      </div>
+      <div class="f s3" style="margin-top:6px">
+        <label>Agent Powers Granted</label>
+        <div class="checklist" style="margin-top:6px">
+          <div class="chk"><input type="checkbox"><label>Banking &amp; financial accounts — deposits, withdrawals, account management</label></div>
+          <div class="chk"><input type="checkbox"><label>Bill payment &amp; routine financial management</label></div>
+          <div class="chk"><input type="checkbox"><label>Investment management — buy, sell, trade securities</label></div>
+          <div class="chk"><input type="checkbox"><label>Real estate — purchase, sale, mortgage, lease</label></div>
+          <div class="chk"><input type="checkbox"><label>Business operations — manage, operate, or wind down business interests</label></div>
+          <div class="chk"><input type="checkbox"><label>Tax matters — file returns, respond to IRS/state, sign documents</label></div>
+          <div class="chk"><input type="checkbox"><label>Retirement accounts — contributions, distributions, beneficiary changes</label></div>
+          <div class="chk"><input type="checkbox"><label>Insurance — manage policies, pay premiums, make claims</label></div>
+          <div class="chk"><input type="checkbox"><label>Trust administration — act as trustee or interact with trustees</label></div>
+          <div class="chk"><input type="checkbox"><label>Estate / probate matters — act in fiduciary capacity</label></div>
+          <div class="chk"><input type="checkbox"><label>Gifting — make gifts to third parties (subject to limits above)</label></div>
+          <div class="chk"><input type="checkbox"><label>Safe deposit box access</label></div>
+          <div class="chk"><input type="checkbox"><label>Digital assets &amp; online accounts</label></div>
+          <div class="chk"><input type="checkbox"><label>Government benefits — Social Security, Medicare, Medicaid</label></div>
+          <div class="chk"><input type="checkbox"><label>Borrowing — take loans, execute notes on principal's behalf</label></div>
+        </div>
+      </div>
+      <div class="f s3"><label>Agent Powers — Additional Notes / Limitations</label><textarea placeholder="Custom limitations, special instructions, powers not listed above…"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Healthcare Power of Attorney</div>
+    <div class="fg fg-3">
+      <div class="f"><label>Primary Healthcare Agent</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Alternate Healthcare Agent</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Primary Agent Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Alternate Agent Email</label><input type="email" placeholder="email@domain.com"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Guardian (for Minor Children)</div>
+    <div class="fg fg-3">
+      <div class="f"><label>Primary Guardian</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Alternate Guardian</label><input type="text" placeholder="Full name"></div>
+      <div class="f"><label>Relationship</label><input type="text" placeholder="Relationship"></div>
+      <div class="f"><label>Phone</label><input type="tel" placeholder="(000) 000-0000"></div>
+      <div class="f"><label>Primary Guardian Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f"><label>Alternate Guardian Email</label><input type="email" placeholder="email@domain.com"></div>
+      <div class="f s3"><label>Guardian Notes</label><textarea placeholder="Selection rationale, objections, same guardian for all children or different per child…"></textarea></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 7 · PLANNING NOTES
+══════════════════════════════════════ -->
+<div class="pane" id="pane-7">
+  <div class="pane-header">
+    <div><div class="pane-title">Attorney Planning Notes</div><div class="pane-sub">Strategy · Recommended Documents · Action Items · Engagement</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Planning Goals — Attorney Assessment</div>
+    <div class="checklist">
+      <div class="chk"><input type="checkbox"><label>Probate avoidance — revocable living trust recommended</label></div>
+      <div class="chk"><input type="checkbox"><label>A/B trust structure — marital deduction / bypass trust planning</label></div>
+      <div class="chk"><input type="checkbox"><label>Medicaid / long-term care planning — MAPT recommended</label></div>
+      <div class="chk"><input type="checkbox"><label>Federal estate tax planning (estate near or above exemption)</label></div>
+      <div class="chk"><input type="checkbox"><label>State estate / inheritance tax planning</label></div>
+      <div class="chk"><input type="checkbox"><label>Business succession / buy-sell agreement review</label></div>
+      <div class="chk"><input type="checkbox"><label>Special needs trust (SNT) establishment</label></div>
+      <div class="chk"><input type="checkbox"><label>Medicaid / long-term care planning — other strategies</label></div>
+      <div class="chk"><input type="checkbox"><label>Asset protection / creditor protection</label></div>
+      <div class="chk"><input type="checkbox"><label>Charitable planning (CRT, DAF, private foundation)</label></div>
+      <div class="chk"><input type="checkbox"><label>ILIT — remove life insurance from taxable estate</label></div>
+      <div class="chk"><input type="checkbox"><label>Advanced strategies — GRAT, SLAT, IDGT</label></div>
+      <div class="chk"><input type="checkbox"><label>Annual gift tax exclusion strategy ($18k per donee)</label></div>
+      <div class="chk"><input type="checkbox"><label>Update beneficiary designations — retirement &amp; life insurance</label></div>
+      <div class="chk"><input type="checkbox"><label>Trust funding — retitling of assets needed</label></div>
+      <div class="chk"><input type="checkbox"><label>TCJA sunset review — act before 2026 exemption reduction</label></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Recommended Documents</div>
+    <div class="checklist">
+      <div class="chk"><input type="checkbox"><label>Revocable Living Trust</label></div>
+      <div class="chk"><input type="checkbox"><label>A/B Revocable Living Trust (Bypass / Marital Trust)</label></div>
+      <div class="chk"><input type="checkbox"><label>Irrevocable Medicaid Asset Protection Trust (MAPT)</label></div>
+      <div class="chk"><input type="checkbox"><label>Pour-Over Will</label></div>
+      <div class="chk"><input type="checkbox"><label>Codicil — Amendment to Existing Will</label></div>
+      <div class="chk"><input type="checkbox"><label>Trust Amendment — Revocable Trust</label></div>
+      <div class="chk"><input type="checkbox"><label>Durable Power of Attorney — Financial</label></div>
+      <div class="chk"><input type="checkbox"><label>Healthcare Power of Attorney</label></div>
+      <div class="chk"><input type="checkbox"><label>Living Will / Advance Healthcare Directive</label></div>
+      <div class="chk"><input type="checkbox"><label>HIPAA Authorization</label></div>
+      <div class="chk"><input type="checkbox"><label>Assignment of Personal Property to Trust</label></div>
+      <div class="chk"><input type="checkbox"><label>Deed(s) — transfer real property into trust</label></div>
+      <div class="chk"><input type="checkbox"><label>Certificate of Trust</label></div>
+      <div class="chk"><input type="checkbox"><label>Beneficiary Designation Updates</label></div>
+      <div class="chk"><input type="checkbox"><label>Special Needs Trust</label></div>
+      <div class="chk"><input type="checkbox"><label>ILIT — Irrevocable Life Insurance Trust</label></div>
+      <div class="chk"><input type="checkbox" id="rec-other-chk" onchange="document.getElementById('rec-other-row').style.display=this.checked?'flex':'none'"><label>Other</label></div>
+    </div>
+    <div id="rec-other-row" style="display:none;gap:8px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--rule-light)">
+      <input type="text" placeholder="Describe other recommended document(s)…" style="flex:1">
+    </div>
+
+  <div class="card">
+    <div class="card-label">Engagement &amp; Referral</div>
+    <div class="fg fg-3">
+      <div class="f"><label>Target Completion Date</label><input type="date"></div>
+      <div class="f"><label>Urgency</label>
+        <div class="pills"><div class="pill"><input type="radio" name="urg" id="urg-std"><label for="urg-std">Standard</label></div><div class="pill warn"><input type="radio" name="urg" id="urg-exp"><label for="urg-exp">Expedited</label></div><div class="pill danger"><input type="radio" name="urg" id="urg-urg"><label for="urg-urg">Urgent ⚑</label></div></div>
+      </div>
+      <div class="f"><label>Referred By</label><input type="text" placeholder="Source of referral"></div>
+      <div class="f"><label>Financial Advisor</label><input type="text" id="fin-adv" placeholder="Advisor name"></div>
+      <div class="f"><label>Advisor Firm</label><input type="text" placeholder="Firm name"></div>
+      <div class="f"><label>Engagement Letter Status</label>
+        <div class="pills"><div class="pill good"><input type="radio" name="eng" id="eng-sent"><label for="eng-sent">Sent &amp; signed</label></div><div class="pill warn"><input type="radio" name="eng" id="eng-pend"><label for="eng-pend">Pending signature</label></div><div class="pill"><input type="radio" name="eng" id="eng-no"><label for="eng-no">Not yet sent</label></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Consultation Notes</div>
+    <textarea class="atty" style="width:100%;min-height:160px" placeholder="Full consultation notes — key decisions made, items deferred, next steps agreed upon, anything the client said that should be documented for the record…"></textarea>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SECTION 8 · SUMMARY & SUBMIT
+══════════════════════════════════════ -->
+<div class="pane" id="pane-8">
+  <div class="pane-header">
+    <div><div class="pane-title">Summary &amp; Finalize</div><div class="pane-sub">Case Review · AI-Generated Summary</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Client at a Glance</div>
+    <div class="sum-grid" id="sum-grid" style="margin-bottom:16px">
+      <div class="sum-item"><div class="sum-key">Client 1</div><div class="sum-val" id="sum-name">—</div></div>
+      <div class="sum-item"><div class="sum-key">Client 2</div><div class="sum-val" id="sum-name2">—</div></div>
+      <div class="sum-item"><div class="sum-key">Date of Birth (C1)</div><div class="sum-val" id="sum-dob">—</div></div>
+      <div class="sum-item"><div class="sum-key">Date of Birth (C2)</div><div class="sum-val" id="sum-dob2">—</div></div>
+      <div class="sum-item"><div class="sum-key">Marital Status</div><div class="sum-val" id="sum-ms">—</div></div>
+      <div class="sum-item"><div class="sum-key">Estate Value Range</div><div class="sum-val accent" id="sum-estate">—</div></div>
+      <div class="sum-item"><div class="sum-key">Financial Advisor</div><div class="sum-val" id="sum-adv">—</div></div>
+      <div class="sum-item"><div class="sum-key">ShareFile Link</div><div class="sum-val" id="sum-sharefile-link">—</div></div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">AI-Generated Case Summary</div>
+      <button class="btn" id="gen-btn" onclick="generateSummary()" style="font-size:11px;padding:5px 14px">Generate Summary ↗</button>
+    </div>
+
+    <div id="ai-summary-wrap" style="display:none">
+      <div id="ai-loading" style="display:none;padding:20px;text-align:center;color:var(--ink-muted);font-size:13px;font-style:italic">
+        <span id="loading-text">Generating summary…</span>
+      </div>
+      <div id="ai-summary-out" style="background:var(--field-bg);border:1px solid var(--rule);border-left:3px solid var(--navy);border-radius:0 4px 4px 0;padding:16px 18px;font-size:13px;line-height:1.75;color:var(--ink);white-space:pre-wrap;font-family:var(--sans)"></div>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px;gap:8px">
+        <button class="btn" onclick="generateSummary()" style="font-size:11px;padding:4px 12px">Regenerate</button>
+        <button class="btn" onclick="copySummary()" id="copy-btn" style="font-size:11px;padding:4px 12px">Copy</button>
+      </div>
+    </div>
+    <div id="ai-summary-empty" style="padding:20px;text-align:center;border:1px dashed var(--rule);border-radius:4px;color:var(--ink-faint);font-size:13px">
+      Fill in intake data across all sections, then click <strong>Generate Summary</strong> for an AI-written case overview.
+    </div>
+  </div>
+
+</div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+let cur = 1;
+const total = 8;
+const names = ['','Client Identity','Family Structure','Assets & Liabilities','Existing Documents','Distribution & Wishes','Fiduciaries','Planning Notes','Summary & Submit'];
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('sb-date').textContent = new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+});
+
+function go(n) {
+  const oldPane = document.getElementById('pane-'+cur);
+  const oldNav  = document.getElementById('nav-'+cur);
+  if(oldPane) oldPane.classList.remove('active');
+  if(oldNav)  { oldNav.classList.remove('active'); if(n > cur) oldNav.classList.add('done'); }
+  cur = n;
+  const newPane = document.getElementById('pane-'+n);
+  const newNav  = document.getElementById('nav-'+n);
+  if(newPane) newPane.classList.add('active');
+  if(newNav)  newNav.classList.add('active');
+  const tbSec = document.getElementById('tb-sec');
+  if(tbSec) tbSec.textContent = names[n];
+  const prog = document.getElementById('prog');
+  const pct  = document.getElementById('pct');
+  const p = Math.round(((n-1)/(total-1))*100);
+  if(prog) prog.style.width = p+'%';
+  if(pct)  pct.textContent  = p+'%';
+  if(n===8) buildSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextPane() { if (cur < total) go(cur+1); }
+
+function toggleSpouse() {
+  // kept for any legacy refs — no-op now
+}
+
+function switchClient(n) {
+  const c1 = document.getElementById('client1-fields');
+  const c2 = document.getElementById('client2-fields');
+  const pm1 = document.getElementById('c1-prior-marriages');
+  const t1 = document.getElementById('tab-c1');
+  const t2 = document.getElementById('tab-c2');
+  if (n === 1) {
+    if(c1) c1.style.display = 'block';
+    if(c2) c2.style.display = 'none';
+    if(pm1) pm1.style.display = 'block';
+    if(t1) { t1.style.background = '#1a3a2a'; t1.style.color = '#fff'; }
+    if(t2) { t2.style.background = '#ffffff'; t2.style.color = '#444444'; }
+  } else {
+    if(c1) c1.style.display = 'none';
+    if(c2) c2.style.display = 'block';
+    if(pm1) pm1.style.display = 'none';
+    if(t2) { t2.style.background = '#1a3a2a'; t2.style.color = '#fff'; }
+    if(t1) { t1.style.background = '#ffffff'; t1.style.color = '#444444'; }
+  }
+}
+
+function updateSidebar2() {
+  const fn = (document.getElementById('c2-first')||{}).value || '';
+  const ln = (document.getElementById('c2-last')||{}).value || '';
+  // optionally update sidebar subtitle
+}
+
+function calcAge2() {
+  const dob = (document.getElementById('c2-dob')||{}).value;
+  if (!dob) return;
+  const d = new Date(dob), t = new Date();
+  let age = t.getFullYear() - d.getFullYear();
+  const m = t.getMonth() - d.getMonth();
+  if (m < 0 || (m === 0 && t.getDate() < d.getDate())) age--;
+  const el = document.getElementById('c2-age');
+  if (el) el.value = age;
+}
+
+function toggleMarriage() {
+  const rel = (document.getElementById('c2-rel')||{}).value;
+  const card = document.getElementById('marriage-card');
+  if (card) card.style.display = (rel === 'Spouse' || rel === 'Domestic Partner') ? 'block' : 'none';
+}
+
+function show(id) { const e=document.getElementById(id); if(e) e.classList.add('show'); }
+function hide(id) { const e=document.getElementById(id); if(e) e.classList.remove('show'); }
+
+function calcAge() {
+  const dob = document.getElementById('c-dob').value;
+  if (!dob) return;
+  const d = new Date(dob), t = new Date();
+  let age = t.getFullYear() - d.getFullYear();
+  const m = t.getMonth() - d.getMonth();
+  if (m < 0 || (m===0 && t.getDate()<d.getDate())) age--;
+  document.getElementById('c-age').value = age;
+}
+
+function updateSidebar() {
+  const fn = document.getElementById('c-first').value;
+  const ln = document.getElementById('c-last').value;
+  document.getElementById('sb-name').textContent = [fn,ln].filter(Boolean).join(' ') || 'New Client';
+}
+
+function updateSharefileLink() {
+  const val = document.getElementById('sharefile-link').value.trim();
+  const el = document.getElementById('sum-sharefile-link');
+  if (val) {
+    el.innerHTML = `<a href="${val}" target="_blank" style="color:var(--navy);text-decoration:underline;font-size:12px;word-break:break-all">${val}</a>`;
+  } else {
+    el.textContent = '—';
+  }
+}
+
+function openSharefile() {
+  const url = document.getElementById('sharefile-link').value.trim();
+  if (url) { window.open(url, '_blank'); }
+  else { alert('Enter a ShareFile link first.'); }
+}
+
+function toggleDoc(key) {
+  const item = document.getElementById('di-' + key);
+  if (!item) return;
+  const isNone = key === 'none';
+  if (isNone) return;
+  item.classList.toggle('open');
+}
+
+function checkDoc(key, cb) {
+  const item = document.getElementById('di-' + key);
+  if (!item) return;
+  if (cb.checked) {
+    item.classList.add('checked');
+    if (key !== 'none') item.classList.add('open');
+  } else {
+    item.classList.remove('checked', 'open');
+  }
+}
+
+let childN = 0;
+function addProperty() {
+  const list = document.getElementById('add-prop-list');
+  const stateOptions = `<option value="">—</option><option>AL</option><option>AK</option><option>AZ</option><option>AR</option><option>CA</option><option>CO</option><option>CT</option><option>DE</option><option>FL</option><option>GA</option><option>HI</option><option>ID</option><option>IL</option><option>IN</option><option>IA</option><option>KS</option><option>KY</option><option>LA</option><option>ME</option><option>MD</option><option>MA</option><option>MI</option><option>MN</option><option>MS</option><option>MO</option><option>MT</option><option>NE</option><option>NV</option><option>NH</option><option>NJ</option><option>NM</option><option>NY</option><option>NC</option><option>ND</option><option>OH</option><option>OK</option><option>OR</option><option>PA</option><option>RI</option><option>SC</option><option>SD</option><option>TN</option><option>TX</option><option>UT</option><option>VT</option><option>VA</option><option>WA</option><option>WV</option><option>WI</option><option>WY</option>`;
+  const div = document.createElement('div');
+  div.className = 'add-prop-item';
+  div.style.cssText = 'background:var(--field-bg);border:1px solid var(--rule-light);border-radius:5px;padding:14px 16px;margin-bottom:10px;position:relative';
+  div.innerHTML = `
+    <button type="button" onclick="this.closest('.add-prop-item').remove()" style="position:absolute;top:8px;right:10px;background:none;border:none;font-size:16px;color:var(--ink-faint);cursor:pointer;line-height:1" title="Remove">×</button>
+    <div class="fg fg-3" style="margin-bottom:8px">
+      <div class="f s2"><label>Street Address</label><input type="text" placeholder="123 Main St"></div>
+      <div class="f"><label>City</label><input type="text" placeholder="City"></div>
+      <div class="f"><label>State</label><select>${stateOptions}</select></div>
+      <div class="f"><label>ZIP</label><input type="text" placeholder="ZIP"></div>
+      <div class="f"><label>Property Type</label><select><option value="">—</option><option>Primary Residence</option><option>Vacation / Second Home</option><option>Rental / Investment</option><option>Commercial</option><option>Land / Vacant Lot</option><option>Other</option></select></div>
+      <div class="f"><label>Estimated FMV</label><input type="text" placeholder="$000,000"></div>
+      <div class="f"><label>Mortgage Balance</label><input type="text" placeholder="$000,000 or None"></div>
+      <div class="f s2"><label>How Titled</label><select><option value="">— select —</option><option>Sole ownership</option><option>Joint tenancy (JTWROS)</option><option>Tenants in common</option><option>Community property</option><option>Community property w/ survivorship</option><option>Held in revocable trust</option><option>LLC / entity</option></select></div>
+      <div class="f s3"><label>Notes</label><textarea placeholder="Title concerns, liens, co-owners, ancillary probate issues…"></textarea></div>
+    </div>`;
+  list.appendChild(div);
+}
+
+function addContactField(containerId, type, placeholder) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const isPhone = type === 'tel';
+  const options = isPhone
+    ? '<option>Mobile</option><option>Home</option><option>Work</option><option>Fax</option>'
+    : '<option>Personal</option><option>Work</option><option>Other</option>';
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:6px;margin-bottom:4px;align-items:center';
+  row.innerHTML = `<input type="${type}" placeholder="${placeholder}" style="flex:1"><select style="width:110px">${options}</select><button type="button" onclick="this.closest('div').remove()" style="flex-shrink:0;width:24px;height:24px;border:1px solid var(--rule);border-radius:3px;background:var(--field-bg);cursor:pointer;font-size:14px;line-height:1;color:var(--ink-muted)">×</button>`;
+  container.appendChild(row);
+}
+
+function addChild() {
+  childN++;
+  const d = document.createElement('div');
+  d.className = 'fg fg-4';
+  d.style.marginTop = '8px';
+  d.innerHTML = `<div class="f"><input type="text" placeholder="Child's name"></div><div class="f"><input type="date"></div><div class="f"><select><option>Biological</option><option>Adopted</option><option>Stepchild</option><option>From prior marriage</option></select></div><div class="f"><div class="pills"><div class="pill"><input type="radio" name="sn${childN}" id="sn${childN}n"><label for="sn${childN}n">No</label></div><div class="pill danger"><input type="radio" name="sn${childN}" id="sn${childN}y"><label for="sn${childN}y">Yes ⚑</label></div></div></div>`;
+  document.getElementById('child-list').appendChild(d);
+}
+
+function addOtherDoc() {
+  const list = document.getElementById('other-docs-list');
+  const div = document.createElement('div');
+  div.className = 'fg fg-3';
+  div.style.marginBottom = '8px';
+  div.style.marginTop = '8px';
+  div.style.paddingTop = '8px';
+  div.style.borderTop = '1px solid var(--rule-light)';
+  div.innerHTML = `
+    <div class="f"><input type="text" placeholder="e.g. Buy-Sell Agreement, QTIP Trust…"></div>
+    <div class="f"><input type="date"></div>
+    <div class="f"><select><option value="">—</option><option>Current</option><option>Needs update</option><option>Outdated</option></select></div>
+    <div class="f s3"><textarea placeholder="Describe document, key provisions, concerns…"></textarea></div>`;
+  list.appendChild(div);
+}
+
+function addBen() {
+  const r = document.createElement('div');
+  r.className = 'dyn';
+  r.innerHTML = `<div class="f"><input type="text" placeholder="Beneficiary name"></div><div class="f"><input type="text" placeholder="Relationship"></div><div class="f"><input type="text" placeholder="e.g. 25%"></div><div class="f"><select><option>Primary</option><option>Contingent</option><option>Remainder</option></select></div><button class="rm-btn" onclick="rmRow(this)">×</button>`;
+  document.getElementById('ben-list').appendChild(r);
+}
+
+function rmRow(btn) {
+  const r = btn.closest('.dyn');
+  if (r) r.remove();
+}
+
+function buildSummary() {
+  const fn = (document.getElementById('c-first')||{}).value || '';
+  const ln = (document.getElementById('c-last')||{}).value || '';
+  const fn2 = (document.getElementById('c2-first')||{}).value || '';
+  const ln2 = (document.getElementById('c2-last')||{}).value || '';
+
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val || '—'; };
+
+  set('sum-name', [fn,ln].filter(Boolean).join(' '));
+  set('sum-name2', [fn2,ln2].filter(Boolean).join(' '));
+  set('sum-dob', (document.getElementById('c-dob')||{}).value || '');
+  set('sum-dob2', (document.getElementById('c2-dob')||{}).value || '');
+  set('sum-ms', (document.getElementById('ms')||{}).value || '');
+  set('sum-estate', (document.getElementById('estate-range')||{}).value || '');
+  set('sum-adv', (document.getElementById('fin-adv')||{}).value || '');
+
+  const sfLink = ((document.getElementById('sharefile-link')||{}).value || '').trim();
+  const sfLinkEl = document.getElementById('sum-sharefile-link');
+  if (sfLinkEl) {
+    if (sfLink) {
+      sfLinkEl.innerHTML = `<a href="${sfLink}" target="_blank" style="color:var(--navy);text-decoration:underline;font-size:12px;word-break:break-all">${sfLink}</a>`;
+    } else {
+      sfLinkEl.textContent = '—';
+    }
+  }
+}
+
+function collectIntakeData() {
+  const val = id => (document.getElementById(id)||{}).value || '';
+  const checked = name => { const r = document.querySelector(`input[name="${name}"]:checked`); return r ? r.parentElement.querySelector('label').textContent.trim() : ''; };
+  const checkboxes = selector => [...document.querySelectorAll(selector)].filter(c=>c.checked).map(c=>c.closest('.chk, .pill')?.querySelector('label')?.textContent?.trim()).filter(Boolean);
+
+  const fn = val('c-first'), ln = val('c-last'), dob = val('c-dob'), age = val('c-age');
+  const ms = val('ms'), addr = val('c-first') ? 'on file' : '';
+  const estateRange = val('estate-range');
+  const advisor = val('fin-adv');
+
+  // Children
+  const childRows = document.querySelectorAll('#child-list [data-ch], #child-list .fg');
+  const childNames = [...childRows].map(r => r.querySelector('input[type=text]')?.value).filter(Boolean);
+
+  // Beneficiaries
+  const benRows = document.querySelectorAll('#ben-list .dyn');
+  const bens = [...benRows].map(r => {
+    const inputs = r.querySelectorAll('input[type=text]');
+    const sel = r.querySelector('select');
+    return [inputs[0]?.value, inputs[1]?.value, inputs[2]?.value, sel?.value].filter(Boolean).join(' — ');
+  }).filter(s => s.length > 3);
+
+  // Existing docs
+  const docs = checkboxes('#pane-4 .chk input[type=checkbox]:checked');
+
+  // Planning goals checked
+  const goals = checkboxes('#pane-7 .checklist:first-of-type .chk input:checked');
+  const recDocs = checkboxes('#pane-7 .checklist:nth-of-type(2) .chk input:checked');
+
+  // Fiduciaries
+  const executor = document.querySelector('#pane-6 input[placeholder="Full name"]')?.value || '';
+  const trustee = document.querySelectorAll('#pane-6 input[placeholder="Full name or institution"]')[0]?.value || '';
+  const guardian = document.querySelectorAll('#pane-6 .card')[4]?.querySelector('input')?.value || '';
+
+  // Flags
+  const taxFlag = document.querySelector('input[name="tax"]:checked');
+  const taxLabel = taxFlag ? taxFlag.parentElement.querySelector('label').textContent.trim() : '';
+  const disinhertChecked = document.getElementById('dis-y')?.checked;
+  const conflictChecked = document.getElementById('conf-hi')?.checked || document.getElementById('conf-med')?.checked;
+  const hasBiz = document.getElementById('biz-y')?.checked;
+  const urgency = checked('urg');
+
+  // Triggering events
+  const triggers = checkboxes('#pane-4 .pills input[type=checkbox]:checked');
+
+  return {
+    name: [fn,ln].filter(Boolean).join(' ') || 'the client',
+    dob, age, ms, estateRange, advisor,
+    hasSpouse: ms==='Married'||ms==='Domestic Partnership',
+    children: childNames,
+    bens, docs, goals, recDocs,
+    executor, trustee, guardian,
+    taxLabel, disinhertChecked, conflictChecked, hasBiz, urgency, triggers,
+    sharefile: ''
+  };
+}
+
+async function generateSummary() {
+  buildSummary();
+  const data = collectIntakeData();
+
+  document.getElementById('ai-summary-empty').style.display = 'none';
+  document.getElementById('ai-summary-wrap').style.display = 'block';
+  document.getElementById('ai-loading').style.display = 'block';
+  document.getElementById('ai-summary-out').textContent = '';
+  document.getElementById('gen-btn').disabled = true;
+
+  const loadingPhrases = ['Reviewing intake data…','Drafting case summary…','Identifying planning priorities…'];
+  let lIdx = 0;
+  const lInterval = setInterval(() => {
+    document.getElementById('loading-text').textContent = loadingPhrases[lIdx++ % loadingPhrases.length];
+  }, 1400);
+
+  const prompt = `You are an estate planning attorney's assistant. Based on the following intake data, write a concise, professional case summary paragraph (3–5 paragraphs) that an attorney can use as a working case overview. Write in clear prose — no bullet points. Cover: who the client is, family situation, estate composition and value, key planning concerns or flags, recommended planning approach, and any urgency or special considerations. Be specific where data is provided; omit sections where data is missing. Use professional legal language appropriate for an internal file memo.
+
+INTAKE DATA:
+Client: ${data.name}${data.age ? ', age ' + data.age : ''}${data.dob ? ' (DOB: ' + data.dob + ')' : ''}
+Marital Status: ${data.ms || 'not provided'}${data.hasSpouse ? ' — spouse information on file' : ''}
+Children: ${data.children.length ? data.children.join(', ') : 'none indicated'}
+Estate Value Range: ${data.estateRange || 'not provided'}
+Financial Advisor: ${data.advisor || 'not indicated'}
+Urgency: ${data.urgency || 'standard'}
+Triggering Events: ${data.triggers.length ? data.triggers.join(', ') : 'none selected'}
+Existing Documents: ${data.docs.length ? data.docs.join(', ') : 'none / not indicated'}
+Beneficiaries: ${data.bens.length ? data.bens.join(' | ') : 'not yet entered'}
+Executor Named: ${data.executor || 'not yet named'}
+Trustee Named: ${data.trustee || 'not yet named'}
+Guardian Named: ${data.guardian || 'not yet named'}
+Tax Exposure: ${data.taxLabel || 'not assessed'}
+Disinheritance Present: ${data.disinhertChecked ? 'Yes — requires careful documentation' : 'No'}
+Family Conflict Risk: ${data.conflictChecked ? 'Elevated — noted in file' : 'Low'}
+Business Interest: ${data.hasBiz ? 'Yes' : 'No'}
+Attorney Planning Goals Checked: ${data.goals.length ? data.goals.join(', ') : 'none selected'}
+Recommended Documents: ${data.recDocs.length ? data.recDocs.join(', ') : 'none selected'}`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const json = await resp.json();
+    clearInterval(lInterval);
+    document.getElementById('ai-loading').style.display = 'none';
+    const text = json.content?.map(b => b.text||'').join('') || 'Unable to generate summary. Please check your connection and try again.';
+    document.getElementById('ai-summary-out').textContent = text;
+  } catch(e) {
+    clearInterval(lInterval);
+    document.getElementById('ai-loading').style.display = 'none';
+    document.getElementById('ai-summary-out').textContent = 'Error generating summary. Please check your network connection and try again.';
+  }
+
+  document.getElementById('gen-btn').disabled = false;
+}
+
+function copySummary() {
+  const text = document.getElementById('ai-summary-out').textContent;
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+
+function saveDraft() {
+  const b = document.querySelector('.btn-save');
+  b.textContent = '✓ Saved';
+  document.getElementById('status-chip').className = 'status-chip review';
+  document.getElementById('status-chip').textContent = 'Saved';
+  setTimeout(()=>{ b.textContent='Save Draft'; },2000);
+}
+
+function markComplete() {
+  document.getElementById('status-chip').className = 'status-chip complete';
+  document.getElementById('status-chip').textContent = 'Complete';
+}
+
+function saveAsHTML() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const fn = document.getElementById('c-first')?.value || '';
+  const ln = document.getElementById('c-last')?.value || '';
+  const name = [fn, ln].filter(Boolean).join('_') || 'intake';
+  a.href = url;
+  a.download = `estate_intake_${name}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/vertiswealth.com/s/AKfycbwnZ0cd7DXdCZnxnt7D87Q5pC7kMf3MYibVSe4FitCFZMAOPjKQlsEDvnvQ6ELENRLX/exec';
+const DRIVE_FOLDER = 'Intakes';
+
+async function uploadToDrive() {
+  const btn = document.getElementById('drive-btn');
+  const fn = document.getElementById('c-first')?.value || '';
+  const ln = document.getElementById('c-last')?.value || '';
+  const filename = `estate_intake_${[fn,ln].filter(Boolean).join('_') || 'intake'}.html`;
+
+  btn.textContent = 'Uploading…';
+  btn.disabled = true;
+
+  try {
+    const html = document.documentElement.outerHTML;
+
+    // Use no-cors mode — Apps Script accepts cross-origin POSTs
+    const resp = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({
+        filename,
+        folderName: DRIVE_FOLDER,
+        content: html,
+        mimeType: 'text/html'
+      })
+    });
+
+    // no-cors returns opaque response — we can't read it, but if no error thrown it succeeded
+    btn.textContent = '✓ Saved to Drive!';
+    btn.style.cssText = 'background:#e6f4ea;color:#137333;border-color:#6dbf8a;font-weight:500;';
+
+    const existing = document.getElementById('drive-open-link');
+    if (existing) existing.remove();
+    const note = document.createElement('span');
+    note.id = 'drive-open-link';
+    note.style.cssText = 'font-size:11px;color:#137333;margin-left:6px;vertical-align:middle;';
+    note.textContent = 'Check Intakes folder in Drive ↗';
+    note.style.cursor = 'pointer';
+    note.onclick = () => window.open('https://drive.google.com/drive/my-drive', '_blank');
+    btn.insertAdjacentElement('afterend', note);
+
+    setTimeout(() => {
+      btn.textContent = '⬆ Upload to Drive';
+      btn.style.cssText = 'background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;';
+      btn.disabled = false;
+      const el = document.getElementById('drive-open-link');
+      if (el) el.remove();
+    }, 6000);
+
+  } catch(e) {
+    btn.textContent = '⬆ Upload to Drive';
+    btn.style.cssText = 'background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;';
+    btn.disabled = false;
+    alert('Upload failed: ' + e.message);
+  }
+}
+
+function printThenDrive() {
+  const fn = document.getElementById('c-first')?.value || '';
+  const ln = document.getElementById('c-last')?.value || '';
+  const name = [fn, ln].filter(Boolean).join(' ') || 'Estate Intake';
+  const origTitle = document.title;
+  document.title = `Estate Intake — ${name}`;
+
+  // Show all panes for full print
+  const panes = document.querySelectorAll('.pane');
+  const hidden = [];
+  panes.forEach(p => { if (!p.classList.contains('active')) { hidden.push(p); p.classList.add('active'); } });
+
+  // After print dialog, open Drive
+  const afterPrint = () => {
+    hidden.forEach(p => p.classList.remove('active'));
+    document.title = origTitle;
+    window.removeEventListener('afterprint', afterPrint);
+    setTimeout(() => {
+      if (confirm('PDF saved? Click OK to open Google Drive to upload it.')) {
+        window.open('https://drive.google.com/drive/my-drive', '_blank');
+      }
+    }, 500);
+  };
+  window.addEventListener('afterprint', afterPrint);
+  window.print();
+}
+
+function saveAsPDF() {
+  const fn = document.getElementById('c-first')?.value || '';
+  const ln = document.getElementById('c-last')?.value || '';
+  const name = [fn, ln].filter(Boolean).join(' ') || 'Estate Intake';
+  const origTitle = document.title;
+  document.title = `Estate Intake — ${name}`;
+  // Show all panes so the full form prints
+  const panes = document.querySelectorAll('.pane');
+  const hidden = [];
+  panes.forEach(p => { if (!p.classList.contains('active')) { hidden.push(p); p.classList.add('active'); } });
+  window.print();
+  // Restore after print dialog closes
+  hidden.forEach(p => p.classList.remove('active'));
+  document.title = origTitle;
+}
+
+
+</script>
+</body>
+</html>
