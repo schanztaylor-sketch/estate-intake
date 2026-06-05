@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Estate Planning — Attorney Intake</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async></script>
 <style>
 :root {
   --navy: #1a3a2a;
@@ -887,6 +886,7 @@ textarea.atty::placeholder { color: #d97706; opacity: 0.6; }
       <button class="btn" onclick="saveAsHTML()" title="Download this page as an HTML file">⬇ Save as HTML</button>
       <button class="btn" onclick="saveAsPDF()" title="Save as PDF">⬇ Save as PDF</button>
       <button class="btn" id="drive-btn" onclick="uploadToDrive()" title="Upload to Google Drive" style="background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;">⬆ Upload to Drive</button>
+      <button class="btn" onclick="printThenDrive()" title="Save as PDF then open Google Drive" style="background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;">⬆ PDF → Drive</button>
       <button class="btn btn-save" onclick="saveDraft()">Save Draft</button>
       <button class="btn btn-primary" onclick="nextPane()">Next →</button>
     </div>
@@ -2288,35 +2288,8 @@ function saveAsHTML() {
   URL.revokeObjectURL(url);
 }
 
-const GDRIVE_CLIENT_ID = '46710144653-mlnaru286h68bmpp5mmo4lnqmfkc8tfm.apps.googleusercontent.com';
-const GDRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file';
-let _gisClient = null;
-
-function getGISClient() {
-  return new Promise((resolve) => {
-    if (_gisClient) { resolve(_gisClient); return; }
-    const init = () => {
-      _gisClient = google.accounts.oauth2.initTokenClient({
-        client_id: GDRIVE_CLIENT_ID,
-        scope: GDRIVE_SCOPE,
-        callback: () => {}
-      });
-      resolve(_gisClient);
-    };
-    if (typeof google !== 'undefined' && google.accounts) { init(); }
-    else { window.addEventListener('load', init); }
-  });
-}
-
-function requestToken(client) {
-  return new Promise((resolve, reject) => {
-    client.callback = (resp) => {
-      if (resp.error) { reject(new Error(resp.error)); return; }
-      resolve(resp.access_token);
-    };
-    client.requestAccessToken({ prompt: 'consent' });
-  });
-}
+const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/vertiswealth.com/s/AKfycbwnZ0cd7DXdCZnxnt7D87Q5pC7kMf3MYibVSe4FitCFZMAOPjKQlsEDvnvQ6ELENRLX/exec';
+const DRIVE_FOLDER = 'Intakes';
 
 async function uploadToDrive() {
   const btn = document.getElementById('drive-btn');
@@ -2324,47 +2297,36 @@ async function uploadToDrive() {
   const ln = document.getElementById('c-last')?.value || '';
   const filename = `estate_intake_${[fn,ln].filter(Boolean).join('_') || 'intake'}.html`;
 
-  btn.textContent = 'Connecting…';
+  btn.textContent = 'Uploading…';
   btn.disabled = true;
 
   try {
-    const client = await getGISClient();
-    btn.textContent = 'Sign in…';
-    const token = await requestToken(client);
-
-    btn.textContent = 'Uploading…';
-
     const html = document.documentElement.outerHTML;
-    const boundary = 'ep_estate_boundary';
-    const meta = JSON.stringify({ name: filename, mimeType: 'text/html' });
-    const body = `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${meta}\r\n--${boundary}\r\nContent-Type: text/html\r\n\r\n${html}\r\n--${boundary}--`;
 
-    const resp = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+    const resp = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': `multipart/related; boundary=${boundary}`
-      },
-      body
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        filename,
+        folderName: DRIVE_FOLDER,
+        content: html,
+        mimeType: 'text/html'
+      })
     });
 
-    if (!resp.ok) {
-      const err = await resp.json();
-      throw new Error(err.error?.message || 'Upload failed');
-    }
+    const json = await resp.json();
+    if (!json.success) throw new Error(json.error || 'Upload failed');
 
-    const file = await resp.json();
     btn.textContent = '✓ Saved to Drive!';
     btn.style.cssText = 'background:#e6f4ea;color:#137333;border-color:#6dbf8a;font-weight:500;';
 
-    // Show open link
     const existing = document.getElementById('drive-open-link');
     if (existing) existing.remove();
     const link = document.createElement('a');
     link.id = 'drive-open-link';
-    link.href = `https://drive.google.com/file/d/${file.id}/view`;
+    link.href = json.url;
     link.target = '_blank';
-    link.style.cssText = 'font-size:11px;color:#1a73e8;margin-left:6px;text-decoration:underline;';
+    link.style.cssText = 'font-size:11px;color:#1a73e8;margin-left:6px;text-decoration:underline;vertical-align:middle;';
     link.textContent = 'Open ↗';
     btn.insertAdjacentElement('afterend', link);
 
@@ -2372,14 +2334,41 @@ async function uploadToDrive() {
       btn.textContent = '⬆ Upload to Drive';
       btn.style.cssText = 'background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;';
       btn.disabled = false;
-    }, 5000);
+    }, 6000);
 
   } catch(e) {
     btn.textContent = '⬆ Upload to Drive';
     btn.style.cssText = 'background:#e8f0fe;color:#1a73e8;border-color:#a8c7fa;';
     btn.disabled = false;
-    alert('Drive upload failed: ' + e.message);
+    alert('Upload failed: ' + e.message);
   }
+}
+
+function printThenDrive() {
+  const fn = document.getElementById('c-first')?.value || '';
+  const ln = document.getElementById('c-last')?.value || '';
+  const name = [fn, ln].filter(Boolean).join(' ') || 'Estate Intake';
+  const origTitle = document.title;
+  document.title = `Estate Intake — ${name}`;
+
+  // Show all panes for full print
+  const panes = document.querySelectorAll('.pane');
+  const hidden = [];
+  panes.forEach(p => { if (!p.classList.contains('active')) { hidden.push(p); p.classList.add('active'); } });
+
+  // After print dialog, open Drive
+  const afterPrint = () => {
+    hidden.forEach(p => p.classList.remove('active'));
+    document.title = origTitle;
+    window.removeEventListener('afterprint', afterPrint);
+    setTimeout(() => {
+      if (confirm('PDF saved? Click OK to open Google Drive to upload it.')) {
+        window.open('https://drive.google.com/drive/my-drive', '_blank');
+      }
+    }, 500);
+  };
+  window.addEventListener('afterprint', afterPrint);
+  window.print();
 }
 
 function saveAsPDF() {
